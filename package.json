@@ -1,0 +1,21 @@
+{
+  "name": "operation-mercy",
+  "version": "1.0.0",
+  "description": "Personal Website",
+  "main": "server.js",
+  "scripts": {
+    "test": "ls"
+  },
+  "author": "Walt Zimmerman",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^1.0.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "console-stamp": "^0.2.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.4.2",
+    "express": "^4.14.0"
+  }
+}
