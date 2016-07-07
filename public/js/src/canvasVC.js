@@ -10,6 +10,7 @@
 */
 
 class CanvasViewController {
+
   constructor(height, width, backgroundImgSrc) {
     this.height = height || window.innerHeight;
     this.width = width || window.innerWidth;
