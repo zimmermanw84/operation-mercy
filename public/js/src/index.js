@@ -4,7 +4,7 @@
 //  Created by Walt Zimmerman on 7/6/16.
 //
 
-import { Player } from './models';
-import { init } from './init';
+import { Sprite } from './models';
+import { CanvasViewController } from './canvasVc';
 
-init();
+const CanvasVC = new CanvasViewController;

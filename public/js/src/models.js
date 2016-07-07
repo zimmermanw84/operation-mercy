@@ -4,9 +4,15 @@
 //  Created by Walt Zimmerman on 7/6/16.
 //
 
-// Player Base Class
-class Player {
-  constructor(name) {
+/**
+* Sprite {object}
+* @params type {ENUM}
+*/
+class Sprite {
+  // static spriteType = { MAIN_CHARACTER: 1, NPC: 2 };
+
+  constructor(type) {
+    this.type = ""
     this.name = name;
   }
 
@@ -15,4 +21,4 @@ class Player {
   }
 };
 
-export { Player }
+export { Sprite }

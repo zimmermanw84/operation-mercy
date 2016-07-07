@@ -10,9 +10,6 @@ module.exports = (grunt) => {
                ]
             },
             files: {
-               // if the source file has an extension of es6 then
-               // we change the name of the source file accordingly.
-               // The result file's extension is always .js
                "./public/js/dist/build.js": ["./public/js/src/index.js"]
             }
          }
