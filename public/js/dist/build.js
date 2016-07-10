@@ -135,6 +135,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var heroX = 19;
 var heroY = 33;
 
+// NPC starting Positions
+var NPC_STARTING_XY = {
+  Mog: { x: 12, y: 14 }
+};
 /**
 * AppController {object}
 * @param ViewController {ViewController}
@@ -164,7 +168,6 @@ var AppController = (function () {
   */
 
   AppController.prototype.logBoard = function logBoard() {
-    console.log("LOG BOARD FIRED");
     this.Board.forEach(function (row) {
       console.log(row);
     });
@@ -190,8 +193,15 @@ var AppController = (function () {
   */
 
   AppController.prototype._setInitSpritePosition = function _setInitSpritePosition() {
+    var _this = this;
+
     this.hero.setPosition(heroX, heroY);
     // Set more NPC sprites after
+    this.npcs.forEach(function (npc) {
+      npc.setPosition(NPC_STARTING_XY[npc.name].x, NPC_STARTING_XY[npc.name].y);
+      // Only need to update board during init for npcs
+      _this._updateBoard(npc);
+    });
   };
 
   /**
@@ -215,9 +225,8 @@ var AppController = (function () {
         this.Board[sprite.y][sprite.x] = sprite;
       }
 
-      console.log("update board", sprite);
       // Rerender in view
-      this.VC.render(sprite);
+      this.VC.render(sprite, this.npcs);
     } else {
       // reset position
       sprite.setPosition(sprite.xLast, sprite.yLast);
@@ -233,7 +242,10 @@ var AppController = (function () {
 
   AppController.prototype._isPlacableOnBoard = function _isPlacableOnBoard(sprite) {
     // MAX Matrix bounds
-    if (sprite.x > 61 || sprite.y > 33) return false;else return true;
+    if (sprite.x > 61 || sprite.y > 33) return false;
+    // Check for NPCs and return false
+    // else if(this.Board[sprite.y][sprite.x] instanceof Npc) return false;
+    else return true;
   };
 
   /**
@@ -243,25 +255,25 @@ var AppController = (function () {
   */
 
   AppController.prototype._bindHeroMovement = function _bindHeroMovement() {
-    var _this = this;
+    var _this2 = this;
 
     window.addEventListener('keydown', function (e) {
       switch (e.keyCode) {
         case 37:
           console.log("Left", 37);
-          _this.hero.moveLeft();
+          _this2.hero.moveLeft();
           break;
         case 38:
           console.log("Up", 38);
-          _this.hero.moveUp();
+          _this2.hero.moveUp();
           break;
         case 39:
           console.log("Right", 39);
-          _this.hero.moveRight();
+          _this2.hero.moveRight();
           break;
         case 40:
           console.log("Down", 40);
-          _this.hero.moveDown();
+          _this2.hero.moveDown();
           break;
         default:
           console.log("non movement key");
@@ -269,8 +281,8 @@ var AppController = (function () {
 
       if ([37, 38, 39, 40].indexOf(e.keyCode) !== -1) {
         // Then update sprite on board
-        _this._updateBoard(_this.hero);
-        _this.logBoard();
+        _this2._updateBoard(_this2.hero);
+        _this2.logBoard();
       }
     });
   };
@@ -350,7 +362,7 @@ var ViewController = (function () {
   * add necessary listeners
   */
 
-  ViewController.prototype.render = function render(sprite) {
+  ViewController.prototype.render = function render(sprite, npcs) {
     var _this = this;
 
     // we can't add the source to the image upon sprite construction or it would load before we add the listener in the VC
@@ -361,6 +373,12 @@ var ViewController = (function () {
       // this.ctx.scale(2,2);
       _this.ctx.clearRect(0, 0, _this.width, _this.height);
       _this.ctx.drawImage(sprite.image, sprite.x * _this.cellPX, sprite.y * _this.cellPX);
+
+      console.log("NPCS", npcs);
+      // Draw NPCS
+      npcs.forEach(function (npc) {
+        _this.ctx.drawImage(npc.image, npc.x * _this.cellPX, npc.y * _this.cellPX);
+      });
     };
   };
 
@@ -389,9 +407,10 @@ var _modelsBoard = require('./models/board');
 var viewController = new _controllersViewController.ViewController();
 var BoardFactory = new _modelsBoard.CollisionMatrix();
 var hero = new _modelsSprite.Locke();
+var NPCs = [new _modelsSprite.Npc("Mog")];
 
 BoardFactory.buildBoard().then(function (Board) {
-  var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero);
+  var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
   AppCtrl.logBoard();
 })['catch'](function (err) {
   console.error(err);
@@ -519,11 +538,6 @@ exports.CollisionMatrix = CollisionMatrix;
 //  Created by Walt Zimmerman on 7/6/16.
 //
 
-/**
-* Sprite {object}
-* @params type {ENUM}
-* Srpite Char Base
-*/
 "use strict";
 
 exports.__esModule = true;
@@ -534,6 +548,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var LOCKE = 1;
 var NPC = 2;
+
+var SPRITE_IMG_SRC = {
+  Locke: "../assets/sprites/lock_thumb.png",
+  Mog: "../assets/sprites/Mog_Front.gif"
+};
+
+/**
+* Sprite {object}
+* @params type {ENUM}
+* Srpite Char Base
+*/
 
 var SpriteBase = (function () {
   function SpriteBase(type, name) {
@@ -564,8 +589,6 @@ var SpriteBase = (function () {
 
     this.x = x;
     this.y = y;
-    console.log("thisX", this.x, "thisY", this.y);
-    console.log("X", x, "Y", y);
   };
 
   SpriteBase.prototype.logName = function logName() {
@@ -579,7 +602,6 @@ var SpriteBase = (function () {
 
 /**
 * Locke {object}
-* @params type {ENUM}
 * Locke - Main Char
 */
 
@@ -593,16 +615,20 @@ var Locke = (function (_SpriteBase) {
     _classCallCheck(this, Locke);
 
     _SpriteBase.call(this, LOCKE, "Locke", x, y);
-
     this.image = new Image();
-    // this.image.src = "../assets/sprites/lock_thumb.png";
 
     // px
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = "../assets/sprites/lock_thumb.png";
+    this.imgSrc = SPRITE_IMG_SRC[this.name];
   }
+
+  /**
+  * Npc {object}
+  * @params type {ENUM}
+  * Locke - Main Char
+  */
 
   // Movement Functions
 
@@ -633,7 +659,30 @@ var Locke = (function (_SpriteBase) {
   return Locke;
 })(SpriteBase);
 
+var Npc = (function (_SpriteBase2) {
+  _inherits(Npc, _SpriteBase2);
+
+  function Npc(name) {
+    var x = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+    var y = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+
+    _classCallCheck(this, Npc);
+
+    _SpriteBase2.call(this, NPC, name, x, y);
+    this.image = new Image();
+
+    // px
+    this.width = 17;
+    this.height = 29;
+    // Asset
+    this.imgSrc = SPRITE_IMG_SRC[this.name];
+  }
+
+  return Npc;
+})(SpriteBase);
+
 exports.Locke = Locke;
+exports.Npc = Npc;
 
 },{}],7:[function(require,module,exports){
 (function (process){

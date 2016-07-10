@@ -4,14 +4,20 @@
 //  Created by Walt Zimmerman on 7/6/16.
 //
 
+const LOCKE = 1;
+const NPC = 2;
+
+const SPRITE_IMG_SRC = {
+  Locke: "../assets/sprites/lock_thumb.png",
+  Mog: "../assets/sprites/Mog_Front.gif"
+};
+
+
 /**
 * Sprite {object}
 * @params type {ENUM}
 * Srpite Char Base
 */
-const LOCKE = 1;
-const NPC = 2;
-
 class SpriteBase {
 
   constructor(type, name, x = 0, y = 0) {
@@ -36,8 +42,6 @@ class SpriteBase {
 
     this.x = x;
     this.y = y;
-    console.log("thisX",this.x ,"thisY",this.y)
-    console.log("X",x ,"Y",y)
   }
 
   logName() {
@@ -47,21 +51,18 @@ class SpriteBase {
 
 /**
 * Locke {object}
-* @params type {ENUM}
 * Locke - Main Char
 */
 class Locke extends SpriteBase {
   constructor(x = 0, y = 0) {
     super(LOCKE, "Locke", x, y);
-
     this.image = new Image;
-    // this.image.src = "../assets/sprites/lock_thumb.png";
 
     // px
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = "../assets/sprites/lock_thumb.png";
+    this.imgSrc = SPRITE_IMG_SRC[this.name];
   }
 
   // Movement Functions
@@ -90,4 +91,23 @@ class Locke extends SpriteBase {
   }
 }
 
-export { Locke }
+/**
+* Npc {object}
+* @params type {ENUM}
+* Locke - Main Char
+*/
+class Npc extends SpriteBase {
+
+  constructor(name, x = 0, y = 0) {
+    super(NPC, name, x, y);
+    this.image = new Image;
+
+    // px
+    this.width = 17;
+    this.height = 29;
+    // Asset
+    this.imgSrc = SPRITE_IMG_SRC[this.name];
+  }
+}
+
+export { Locke, Npc }

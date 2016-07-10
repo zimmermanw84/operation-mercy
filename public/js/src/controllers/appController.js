@@ -6,7 +6,10 @@
 
 // Hero/Locke Starting position
 const [heroX, heroY] = [19, 33];
-
+// NPC starting Positions
+const  NPC_STARTING_XY = {
+  Mog: { x: 12, y: 14}
+}
 /**
 * AppController {object}
 * @param ViewController {ViewController}
@@ -32,7 +35,6 @@ class AppController {
   * Console log the board
   */
   logBoard() {
-    console.log("LOG BOARD FIRED");
     this.Board.forEach((row) => {
       console.log(row);
     });
@@ -58,6 +60,11 @@ class AppController {
   _setInitSpritePosition() {
     this.hero.setPosition(heroX, heroY);
     // Set more NPC sprites after
+    this.npcs.forEach((npc) => {
+      npc.setPosition(NPC_STARTING_XY[npc.name].x, NPC_STARTING_XY[npc.name].y);
+      // Only need to update board during init for npcs
+      this._updateBoard(npc);
+    });
   }
 
   /**
@@ -80,9 +87,8 @@ class AppController {
         this.Board[sprite.y][sprite.x] = sprite;
       }
 
-      console.log("update board", sprite)
       // Rerender in view
-      this.VC.render(sprite);
+      this.VC.render(sprite, this.npcs);
     } else {
       // reset position
       sprite.setPosition(sprite.xLast, sprite.yLast);
@@ -99,6 +105,8 @@ class AppController {
   _isPlacableOnBoard(sprite) {
     // MAX Matrix bounds
     if(sprite.x > 61 || sprite.y > 33) return false;
+    // Check for NPCs and return false
+    // else if(this.Board[sprite.y][sprite.x] instanceof Npc) return false;
     else return true;
   }
 

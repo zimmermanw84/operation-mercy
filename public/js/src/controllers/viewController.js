@@ -53,7 +53,7 @@ class ViewController {
   * _bindInitEvents {function}
   * add necessary listeners
   */
-  render(sprite) {
+  render(sprite, npcs) {
     // we can't add the source to the image upon sprite construction or it would load before we add the listener in the VC
     sprite.image.src = sprite.imgSrc;
 
@@ -62,6 +62,13 @@ class ViewController {
       // this.ctx.scale(2,2);
       this.ctx.clearRect(0, 0, this.width, this.height)
       this.ctx.drawImage(sprite.image, (sprite.x*this.cellPX), (sprite.y*this.cellPX));
+
+      console.log("NPCS", npcs);
+      // Draw NPCS
+      npcs.forEach((npc) => {
+        this.ctx.drawImage(npc.image, (npc.x*this.cellPX), (npc.y*this.cellPX));
+      });
+
     }
   }
 
