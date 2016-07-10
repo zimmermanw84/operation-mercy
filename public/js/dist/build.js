@@ -637,13 +637,12 @@ var Locke = (function (_SpriteBase) {
     _classCallCheck(this, Locke);
 
     _SpriteBase.call(this, LOCKE, "Locke", x, y);
-    this.image = new Image();
+
     // px
-    // this.image.width = 22;
-    // this.image.height = 22;
+    this.width = 17;
+    this.height = 29;
     // Asset
     this.imgSrc = "assets/sprites/lock_thumb.png";
-    // this.image.src = "assets/sprites/lock_thumb.png";
   }
 
   // Movement Functions
