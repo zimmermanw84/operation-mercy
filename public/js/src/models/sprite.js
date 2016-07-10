@@ -54,11 +54,14 @@ class Locke extends SpriteBase {
   constructor(x = 0, y = 0) {
     super(LOCKE, "Locke", x, y);
 
+    this.image = new Image;
+    // this.image.src = "../assets/sprites/lock_thumb.png";
+
     // px
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = "assets/sprites/lock_thumb.png";
+    this.imgSrc = "../assets/sprites/lock_thumb.png";
   }
 
   // Movement Functions

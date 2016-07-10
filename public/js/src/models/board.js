@@ -80,10 +80,9 @@ class CollisionMatrix {
           console.log(boardRow.length)
           // Push row into board
           Board.push(boardRow);
-          // After last itteration
+          // After last iteration
           if(index + 1 === array.length) {
             // Return Board
-            console.log("RESOLVED", Board.length);
             resolve(Board);
           } else {
             // Reset row

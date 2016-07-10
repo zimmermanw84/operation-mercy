@@ -314,8 +314,7 @@ var ViewController = (function () {
 
     this.height = 768 || height; // height of background image
     this.width = 1366 || width; // width of background image
-    this.backgroundImgSrc = backgroundImgSrc || "assets/sprites/ResizedMap.png";
-    this.background = new Image();
+    this.cellPX = 21.5;
 
     // Uninitalized canvas and context objects
     this.canvas;
@@ -326,40 +325,12 @@ var ViewController = (function () {
   }
 
   /**
-  * @public
-  * drawSprite {function}
-  * Draw sprite
-  */
-
-  ViewController.prototype.drawSprite = function drawSprite(sprite) {
-    var _this = this;
-
-    console.log("DRAWING SPRITE DEFORE LOAD");
-    sprite.image.onload = function () {
-      console.log("DRAWING SPRITE");
-      _this.ctx.drawImage(sprite.image, sprite.x, sprite.y);
-    };
-  };
-
-  /**
   * @private
   * _init {function}
   * Initialize ViewController
   */
 
   ViewController.prototype._init = function _init() {
-    this._buildAndAppendCanvas();
-    // this._drawBackgroundImg();
-    // this.render();
-  };
-
-  /**
-  * @private
-  * _buildAndAppendCanvas {function}
-  * Build canvas and append to DOM
-  */
-
-  ViewController.prototype._buildAndAppendCanvas = function _buildAndAppendCanvas() {
     this.canvas = document.createElement("canvas");
     this.canvas.style.position = "absolute";
     this.canvas.style.zIndex = "1";
@@ -367,20 +338,10 @@ var ViewController = (function () {
     this.ctx = this.canvas.getContext("2d");
 
     // Set Props
-    this.canvas.width = this.width; // window.innerWidth;
-    this.canvas.height = this.height; //window.innerHeight;480;
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
     // Append canvas object
     document.body.appendChild(this.canvas);
-  };
-
-  /**
-  * @private
-  * _drawBackgroundImg {function}
-  * Draw background Img on canvas
-  */
-
-  ViewController.prototype._drawBackgroundImg = function _drawBackgroundImg() {
-    this.background.src = this.backgroundImgSrc;
   };
 
   /**
@@ -390,20 +351,16 @@ var ViewController = (function () {
   */
 
   ViewController.prototype.render = function render(sprite) {
-    var _this2 = this;
+    var _this = this;
+
+    // we can't add the source to the image upon sprite construction or it would load before we add the listener in the VC
+    sprite.image.src = sprite.imgSrc;
 
     // Bind load event
-    console.log("RENDER", sprite.image);
-    var spriteImg = new Image();
-    spriteImg.src = "assets/sprites/lock_thumb.png";
-    // document.body.appendChild(sprite.image);
-    spriteImg.onload = function () {
+    sprite.image.onload = function () {
       // this.ctx.scale(2,2);
-      _this2.ctx.clearRect(0, 0, _this2.width, _this2.height);
-      console.log("RENDER With sprite");
-      _this2.ctx.drawImage(spriteImg, sprite.x * 22, sprite.y * 22);
-
-      // this.ctx.drawImage(this.background,0,0);
+      _this.ctx.clearRect(0, 0, _this.width, _this.height);
+      _this.ctx.drawImage(sprite.image, sprite.x * _this.cellPX, sprite.y * _this.cellPX);
     };
   };
 
@@ -537,10 +494,9 @@ var CollisionMatrix = (function () {
           console.log(boardRow.length);
           // Push row into board
           Board.push(boardRow);
-          // After last itteration
+          // After last iteration
           if (index + 1 === array.length) {
             // Return Board
-            console.log("RESOLVED", Board.length);
             resolve(Board);
           } else {
             // Reset row
@@ -638,11 +594,14 @@ var Locke = (function (_SpriteBase) {
 
     _SpriteBase.call(this, LOCKE, "Locke", x, y);
 
+    this.image = new Image();
+    // this.image.src = "../assets/sprites/lock_thumb.png";
+
     // px
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = "assets/sprites/lock_thumb.png";
+    this.imgSrc = "../assets/sprites/lock_thumb.png";
   }
 
   // Movement Functions
