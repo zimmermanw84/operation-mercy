@@ -120,6 +120,36 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
+//  Sprite img sorces
+//  public/js/src/config/img_src.js
+//
+//  Created by Walt Zimmerman on 7/11/16.
+//
+
+"use strict";
+
+exports.__esModule = true;
+var SPRITE_IMG_SRC = {
+  Locke: {
+    up: ["../assets/sprites/locke/locke_back_1.png", "../assets/sprites/locke/locke_back_2.png", "../assets/sprites/locke/locke_back_3.png"],
+    down: ["../assets/sprites/locke/locke_front_1.png", "../assets/sprites/locke/locke_front_2.png", "../assets/sprites/locke/locke_front_3.png"],
+    left: ["../assets/sprites/locke/locke_left_1.png", "../assets/sprites/locke/locke_left_2.png", "../assets/sprites/locke/locke_left_3.png"],
+    right: ["../assets/sprites/locke/locke_right_1.png", "../assets/sprites/locke/locke_right_2.png", "../assets/sprites/locke/locke_right_3.png"]
+  },
+  Emporer: {
+    up: ["../assets/sprites/emporer/emporer_back_1.png", "../assets/sprites/emporer/emporer_back_2.png", "../assets/sprites/emporer/emporer_back_3.png"],
+    down: ["../assets/sprites/emporer/emporer_front_1.png", "../assets/sprites/emporer/emporer_front_2.png", "../assets/sprites/emporer/emporer_front_3.png"],
+    left: ["../assets/sprites/emporer/emporer_left_1.png", "../assets/sprites/emporer/emporer_left_2.png", "../assets/sprites/emporer/emporer_left_3.png"],
+    right: ["../assets/sprites/emporer/emporer_right_1.png", "../assets/sprites/emporer/emporer_right_2.png", "../assets/sprites/emporer/emporer_right_3.png"]
+  }
+  // Mog: "../assets/sprites/mog_front.png",
+  // Gaurd: "../assets/sprites/narshe_gaurd.png",
+  // Kefka: "../assets/sprites/kefka.png"
+};
+
+exports.SPRITE_IMG_SRC = SPRITE_IMG_SRC;
+
+},{}],3:[function(require,module,exports){
 //  Application Controller
 //  public/js/src/contollers/appController.js
 //
@@ -137,11 +167,11 @@ var heroY = 33;
 
 // NPC starting Positions
 var NPC_STARTING_XY = {
-  Mog: { x: 12, y: 14 },
-  Emperor: { x: 29, y: 9 },
-  Gaurd: { x: 41, y: 15 },
-  Kefka: { x: 54, y: 11 }
+  // Mog: { x: 12, y: 14},
+  Emporer: { x: 29, y: 9 }
 };
+// Gaurd: { x: 41, y: 15},
+// Kefka: { x: 54, y: 11}
 /**
 * AppController {object}
 * @param ViewController {ViewController}
@@ -283,7 +313,7 @@ var AppController = (function () {
         // Then update sprite on board
         _this2._updateBoard(_this2.hero);
         // For Development
-        // this.logBoard();
+        _this2.logBoard();
       }
     });
   };
@@ -294,7 +324,7 @@ var AppController = (function () {
 exports.AppController = AppController;
 // Hero/Locke Starting position
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 //  Canvas View Controller
 //  public/js/src/canvasVC.js
 //
@@ -377,6 +407,7 @@ var ViewController = (function () {
 
       // Draw NPCS
       npcs.forEach(function (npc) {
+        console.log(npc);
         _this.ctx.drawImage(npc.image, npc.x * _this.cellPX, npc.y * _this.cellPX);
       });
     };
@@ -387,7 +418,7 @@ var ViewController = (function () {
 
 exports.ViewController = ViewController;
 
-},{"../../vendor/Q":7}],4:[function(require,module,exports){
+},{"../../vendor/Q":8}],5:[function(require,module,exports){
 //  Index
 //  public/js/src/index.js
 //
@@ -409,7 +440,8 @@ var BoardFactory = new _modelsBoard.CollisionMatrix();
 
 // Characters
 var hero = new _modelsSprite.Locke();
-var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emperor"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
+// const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
+var NPCs = [new _modelsSprite.Npc("Emporer")];
 
 BoardFactory.buildBoard().then(function (Board) {
   var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
@@ -418,7 +450,7 @@ BoardFactory.buildBoard().then(function (Board) {
   console.error(err);
 });
 
-},{"./controllers/appController":2,"./controllers/viewController":3,"./models/board":5,"./models/sprite":6}],5:[function(require,module,exports){
+},{"./controllers/appController":3,"./controllers/viewController":4,"./models/board":6,"./models/sprite":7}],6:[function(require,module,exports){
 //  Board
 //  public/js/src/models/board.js
 //
@@ -533,7 +565,7 @@ var CollisionMatrix = (function () {
 
 exports.CollisionMatrix = CollisionMatrix;
 
-},{"../../vendor/Q":7}],6:[function(require,module,exports){
+},{"../../vendor/Q":8}],7:[function(require,module,exports){
 //  Models
 //  public/js/src/models.js
 //
@@ -548,27 +580,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var LOCKE = 1;
-var NPC = 2;
-
-var SPRITE_IMG_SRC = {
-  Locke: {
-    up: ["../assets/sprites/locke_back_1.png", "../assets/sprites/locke_back_2.png", "../assets/sprites/locke_back_3.png"],
-    down: ["../assets/sprites/locke_front_1.png", "../assets/sprites/locke_front_2.png", "../assets/sprites/locke_front_3.png"],
-    left: ["../assets/sprites/locke_left_1.png", "../assets/sprites/locke_left_2.png", "../assets/sprites/locke_left_3.png"],
-    right: ["../assets/sprites/locke_left_1.png", "../assets/sprites/locke_left_2.png", "../assets/sprites/locke_left_3.png"]
-  },
-  Mog: "../assets/sprites/mog_front.png",
-  Emperor: "../assets/sprites/emperor.png",
-  Gaurd: "../assets/sprites/narshe_gaurd.png",
-  Kefka: "../assets/sprites/kefka.png"
-};
+var _configImg_src = require("../config/img_src");
 
 /**
 * Sprite {object}
 * @params type {ENUM}
 * Srpite Char Base
 */
+var LOCKE = 1;
+var NPC = 2;
 
 var SpriteBase = (function () {
   function SpriteBase(type, name) {
@@ -604,6 +624,40 @@ var SpriteBase = (function () {
     this.y = y;
   };
 
+  // Movement Functions
+
+  SpriteBase.prototype.moveLeft = function moveLeft() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.x -= 1;
+
+    this._rotateImageSrc("left");
+  };
+
+  SpriteBase.prototype.moveRight = function moveRight() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.x += 1;
+
+    this._rotateImageSrc("right");
+  };
+
+  SpriteBase.prototype.moveUp = function moveUp() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.y -= 1;
+
+    this._rotateImageSrc("up");
+  };
+
+  SpriteBase.prototype.moveDown = function moveDown() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.y += 1;
+
+    this._rotateImageSrc("down");
+  };
+
   SpriteBase.prototype.logName = function logName() {
     console.log("Hey I am " + this.name);
   };
@@ -635,7 +689,7 @@ var Locke = (function (_SpriteBase) {
     this.height = 29;
     // Asset
     // Setting starting src
-    this.imgSrc = SPRITE_IMG_SRC[this.name].up[this.currentImgIndex];
+    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name].up[this.currentImgIndex];
   }
 
   /**
@@ -652,51 +706,15 @@ var Locke = (function (_SpriteBase) {
 
   Locke.prototype._rotateImageSrc = function _rotateImageSrc(direction) {
     // Set img src
-    this.imgSrc = SPRITE_IMG_SRC[this.name][direction][this.currentImgIndex];
+    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name][direction][this.currentImgIndex];
 
     // Reset if currentImgIndex
-    if (this.currentImgIndex >= SPRITE_IMG_SRC[this.name][direction].length - 1) {
+    if (this.currentImgIndex >= _configImg_src.SPRITE_IMG_SRC[this.name][direction].length - 1) {
       this.currentImgIndex = 0;
     } else {
       // Rotate image index
       this.currentImgIndex++;
     }
-
-    // return this;
-  };
-
-  // Movement Functions
-
-  Locke.prototype.moveLeft = function moveLeft() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.x -= 1;
-
-    this._rotateImageSrc("left");
-  };
-
-  Locke.prototype.moveRight = function moveRight() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.x += 1;
-
-    this._rotateImageSrc("left");
-  };
-
-  Locke.prototype.moveUp = function moveUp() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.y -= 1;
-
-    this._rotateImageSrc("up");
-  };
-
-  Locke.prototype.moveDown = function moveDown() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.y += 1;
-
-    this._rotateImageSrc("down");
   };
 
   return Locke;
@@ -718,7 +736,7 @@ var Npc = (function (_SpriteBase2) {
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = SPRITE_IMG_SRC[this.name];
+    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name].down[this.currentImgIndex];
   }
 
   return Npc;
@@ -727,7 +745,7 @@ var Npc = (function (_SpriteBase2) {
 exports.Locke = Locke;
 exports.Npc = Npc;
 
-},{}],7:[function(require,module,exports){
+},{"../config/img_src":2}],8:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 "use strict";
@@ -2744,4 +2762,4 @@ exports.Npc = Npc;
  */
 
 }).call(this,require('_process'))
-},{"_process":1}]},{},[4]);
+},{"_process":1}]},{},[5]);

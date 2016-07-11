@@ -8,10 +8,10 @@
 const [heroX, heroY] = [19, 33];
 // NPC starting Positions
 const  NPC_STARTING_XY = {
-  Mog: { x: 12, y: 14},
-  Emperor: { x: 29, y: 9},
-  Gaurd: { x: 41, y: 15},
-  Kefka: { x: 54, y: 11}
+  // Mog: { x: 12, y: 14},
+  Emporer: { x: 29, y: 9},
+  // Gaurd: { x: 41, y: 15},
+  // Kefka: { x: 54, y: 11}
 }
 /**
 * AppController {object}
@@ -143,7 +143,7 @@ class AppController {
           // Then update sprite on board
           this._updateBoard(this.hero);
           // For Development
-          // this.logBoard();
+          this.logBoard();
         }
     });
   }

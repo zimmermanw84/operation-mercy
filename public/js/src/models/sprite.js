@@ -7,35 +7,7 @@
 const LOCKE = 1;
 const NPC = 2;
 
-const SPRITE_IMG_SRC = {
-  Locke: {
-    up: [
-      "../assets/sprites/locke_back_1.png",
-      "../assets/sprites/locke_back_2.png",
-      "../assets/sprites/locke_back_3.png"
-    ],
-    down: [
-      "../assets/sprites/locke_front_1.png",
-      "../assets/sprites/locke_front_2.png",
-      "../assets/sprites/locke_front_3.png"
-    ],
-    left: [
-      "../assets/sprites/locke_left_1.png",
-      "../assets/sprites/locke_left_2.png",
-      "../assets/sprites/locke_left_3.png"
-    ],
-    right: [
-      "../assets/sprites/locke_left_1.png",
-      "../assets/sprites/locke_left_2.png",
-      "../assets/sprites/locke_left_3.png"
-    ]
-  },
-  Mog: "../assets/sprites/mog_front.png",
-  Emperor: "../assets/sprites/emperor.png",
-  Gaurd: "../assets/sprites/narshe_gaurd.png",
-  Kefka: "../assets/sprites/kefka.png"
-};
-
+import { SPRITE_IMG_SRC } from "../config/img_src";
 
 /**
 * Sprite {object}
@@ -69,6 +41,39 @@ class SpriteBase {
 
     this.x = x;
     this.y = y;
+  }
+
+  // Movement Functions
+  moveLeft() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.x -= 1;
+
+    this._rotateImageSrc("left");
+  }
+
+  moveRight() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.x += 1;
+
+    this._rotateImageSrc("right");
+  }
+
+  moveUp() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.y -= 1;
+
+    this._rotateImageSrc("up");
+  }
+
+  moveDown() {
+    this.xLast = this.x;
+    this.yLast = this.y;
+    this.y += 1;
+
+    this._rotateImageSrc("down");
   }
 
   logName() {
@@ -110,41 +115,8 @@ class Locke extends SpriteBase {
       this.currentImgIndex++;
     }
 
-    // return this;
   }
 
-  // Movement Functions
-  moveLeft() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.x -= 1;
-
-    this._rotateImageSrc("left");
-  }
-
-  moveRight() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.x += 1;
-
-    this._rotateImageSrc("left");
-  }
-
-  moveUp() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.y -= 1;
-
-    this._rotateImageSrc("up");
-  }
-
-  moveDown() {
-    this.xLast = this.x;
-    this.yLast = this.y;
-    this.y += 1;
-
-    this._rotateImageSrc("down");
-  }
 }
 
 /**
@@ -162,7 +134,7 @@ class Npc extends SpriteBase {
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = SPRITE_IMG_SRC[this.name];
+    this.imgSrc = SPRITE_IMG_SRC[this.name].down[this.currentImgIndex];
   }
 }
 

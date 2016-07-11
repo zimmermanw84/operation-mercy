@@ -65,6 +65,7 @@ class ViewController {
 
       // Draw NPCS
       npcs.forEach((npc) => {
+        console.log(npc)
         this.ctx.drawImage(npc.image, (npc.x*this.cellPX), (npc.y*this.cellPX));
       });
 
