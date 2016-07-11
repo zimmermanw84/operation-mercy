@@ -143,7 +143,7 @@ class AppController {
           // Then update sprite on board
           this._updateBoard(this.hero);
           // For Development
-          this.logBoard();
+          // this.logBoard();
         }
     });
   }

@@ -8,7 +8,28 @@ const LOCKE = 1;
 const NPC = 2;
 
 const SPRITE_IMG_SRC = {
-  Locke: "../assets/sprites/locke_back_1.png",
+  Locke: {
+    up: [
+      "../assets/sprites/locke_back_1.png",
+      "../assets/sprites/locke_back_2.png",
+      "../assets/sprites/locke_back_3.png"
+    ],
+    down: [
+      "../assets/sprites/locke_front_1.png",
+      "../assets/sprites/locke_front_2.png",
+      "../assets/sprites/locke_front_3.png"
+    ],
+    left: [
+      "../assets/sprites/locke_left_1.png",
+      "../assets/sprites/locke_left_2.png",
+      "../assets/sprites/locke_left_3.png"
+    ],
+    right: [
+      "../assets/sprites/locke_left_1.png",
+      "../assets/sprites/locke_left_2.png",
+      "../assets/sprites/locke_left_3.png"
+    ]
+  },
   Mog: "../assets/sprites/mog_front.png",
   Emperor: "../assets/sprites/emperor.png",
   Gaurd: "../assets/sprites/narshe_gaurd.png",
@@ -32,6 +53,9 @@ class SpriteBase {
     this.y = y;
     this.xLast;
     this.yLast;
+
+    // For rotating sprite images
+    this.currentImgIndex = 0;
   }
 
   /**
@@ -65,7 +89,28 @@ class Locke extends SpriteBase {
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = SPRITE_IMG_SRC[this.name];
+    // Setting starting src
+    this.imgSrc = SPRITE_IMG_SRC[this.name].up[this.currentImgIndex];
+  }
+
+  /**
+  * @private
+  * _rotateImageSrc {function}
+  * Rotate img src for animation
+  */
+  _rotateImageSrc(direction) {
+    // Set img src
+    this.imgSrc = SPRITE_IMG_SRC[this.name][direction][this.currentImgIndex];
+
+    // Reset if currentImgIndex
+    if(this.currentImgIndex >= SPRITE_IMG_SRC[this.name][direction].length - 1) {
+      this.currentImgIndex = 0;
+    } else {
+      // Rotate image index
+      this.currentImgIndex++;
+    }
+
+    // return this;
   }
 
   // Movement Functions
@@ -73,24 +118,32 @@ class Locke extends SpriteBase {
     this.xLast = this.x;
     this.yLast = this.y;
     this.x -= 1;
+
+    this._rotateImageSrc("left");
   }
 
   moveRight() {
     this.xLast = this.x;
     this.yLast = this.y;
     this.x += 1;
+
+    this._rotateImageSrc("left");
   }
 
   moveUp() {
     this.xLast = this.x;
     this.yLast = this.y;
     this.y -= 1;
+
+    this._rotateImageSrc("up");
   }
 
   moveDown() {
     this.xLast = this.x;
     this.yLast = this.y;
     this.y += 1;
+
+    this._rotateImageSrc("down");
   }
 }
 

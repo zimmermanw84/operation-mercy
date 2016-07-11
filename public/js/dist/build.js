@@ -283,7 +283,7 @@ var AppController = (function () {
         // Then update sprite on board
         _this2._updateBoard(_this2.hero);
         // For Development
-        _this2.logBoard();
+        // this.logBoard();
       }
     });
   };
@@ -414,8 +414,9 @@ var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emperor"), new 
 BoardFactory.buildBoard().then(function (Board) {
   var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
   AppCtrl.logBoard();
+})['catch'](function (err) {
+  console.error(err);
 });
-// .catch((err) => { console.error(err); });
 
 },{"./controllers/appController":2,"./controllers/viewController":3,"./models/board":5,"./models/sprite":6}],5:[function(require,module,exports){
 //  Board
@@ -551,7 +552,12 @@ var LOCKE = 1;
 var NPC = 2;
 
 var SPRITE_IMG_SRC = {
-  Locke: "../assets/sprites/locke_back_1.png",
+  Locke: {
+    up: ["../assets/sprites/locke_back_1.png", "../assets/sprites/locke_back_2.png", "../assets/sprites/locke_back_3.png"],
+    down: ["../assets/sprites/locke_front_1.png", "../assets/sprites/locke_front_2.png", "../assets/sprites/locke_front_3.png"],
+    left: ["../assets/sprites/locke_left_1.png", "../assets/sprites/locke_left_2.png", "../assets/sprites/locke_left_3.png"],
+    right: ["../assets/sprites/locke_left_1.png", "../assets/sprites/locke_left_2.png", "../assets/sprites/locke_left_3.png"]
+  },
   Mog: "../assets/sprites/mog_front.png",
   Emperor: "../assets/sprites/emperor.png",
   Gaurd: "../assets/sprites/narshe_gaurd.png",
@@ -579,6 +585,9 @@ var SpriteBase = (function () {
     this.y = y;
     this.xLast;
     this.yLast;
+
+    // For rotating sprite images
+    this.currentImgIndex = 0;
   }
 
   /**
@@ -625,7 +634,8 @@ var Locke = (function (_SpriteBase) {
     this.width = 17;
     this.height = 29;
     // Asset
-    this.imgSrc = SPRITE_IMG_SRC[this.name];
+    // Setting starting src
+    this.imgSrc = SPRITE_IMG_SRC[this.name].up[this.currentImgIndex];
   }
 
   /**
@@ -634,30 +644,59 @@ var Locke = (function (_SpriteBase) {
   * Locke - Main Char
   */
 
+  /**
+  * @private
+  * _rotateImageSrc {function}
+  * Rotate img src for animation
+  */
+
+  Locke.prototype._rotateImageSrc = function _rotateImageSrc(direction) {
+    // Set img src
+    this.imgSrc = SPRITE_IMG_SRC[this.name][direction][this.currentImgIndex];
+
+    // Reset if currentImgIndex
+    if (this.currentImgIndex >= SPRITE_IMG_SRC[this.name][direction].length - 1) {
+      this.currentImgIndex = 0;
+    } else {
+      // Rotate image index
+      this.currentImgIndex++;
+    }
+
+    // return this;
+  };
+
   // Movement Functions
 
   Locke.prototype.moveLeft = function moveLeft() {
     this.xLast = this.x;
     this.yLast = this.y;
     this.x -= 1;
+
+    this._rotateImageSrc("left");
   };
 
   Locke.prototype.moveRight = function moveRight() {
     this.xLast = this.x;
     this.yLast = this.y;
     this.x += 1;
+
+    this._rotateImageSrc("left");
   };
 
   Locke.prototype.moveUp = function moveUp() {
     this.xLast = this.x;
     this.yLast = this.y;
     this.y -= 1;
+
+    this._rotateImageSrc("up");
   };
 
   Locke.prototype.moveDown = function moveDown() {
     this.xLast = this.x;
     this.yLast = this.y;
     this.y += 1;
+
+    this._rotateImageSrc("down");
   };
 
   return Locke;
