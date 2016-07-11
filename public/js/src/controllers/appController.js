@@ -8,7 +8,10 @@
 const [heroX, heroY] = [19, 33];
 // NPC starting Positions
 const  NPC_STARTING_XY = {
-  Mog: { x: 12, y: 14}
+  Mog: { x: 12, y: 14},
+  Emperor: { x: 29, y: 9},
+  Gaurd: { x: 41, y: 15},
+  Kefka: { x: 54, y: 11}
 }
 /**
 * AppController {object}
@@ -105,8 +108,6 @@ class AppController {
   _isPlacableOnBoard(sprite) {
     // MAX Matrix bounds
     if(sprite.x > 61 || sprite.y > 33) return false;
-    // Check for NPCs and return false
-    // else if(this.Board[sprite.y][sprite.x] instanceof Npc) return false;
     else return true;
   }
 

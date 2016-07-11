@@ -137,7 +137,10 @@ var heroY = 33;
 
 // NPC starting Positions
 var NPC_STARTING_XY = {
-  Mog: { x: 12, y: 14 }
+  Mog: { x: 12, y: 14 },
+  Emperor: { x: 29, y: 9 },
+  Gaurd: { x: 41, y: 15 },
+  Kefka: { x: 54, y: 11 }
 };
 /**
 * AppController {object}
@@ -242,10 +245,7 @@ var AppController = (function () {
 
   AppController.prototype._isPlacableOnBoard = function _isPlacableOnBoard(sprite) {
     // MAX Matrix bounds
-    if (sprite.x > 61 || sprite.y > 33) return false;
-    // Check for NPCs and return false
-    // else if(this.Board[sprite.y][sprite.x] instanceof Npc) return false;
-    else return true;
+    if (sprite.x > 61 || sprite.y > 33) return false;else return true;
   };
 
   /**
@@ -406,8 +406,10 @@ var _modelsBoard = require('./models/board');
 
 var viewController = new _controllersViewController.ViewController();
 var BoardFactory = new _modelsBoard.CollisionMatrix();
+
+// Characters
 var hero = new _modelsSprite.Locke();
-var NPCs = [new _modelsSprite.Npc("Mog")];
+var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emperor"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
 
 BoardFactory.buildBoard().then(function (Board) {
   var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
@@ -551,7 +553,10 @@ var NPC = 2;
 
 var SPRITE_IMG_SRC = {
   Locke: "../assets/sprites/lock_thumb.png",
-  Mog: "../assets/sprites/Mog_Front.gif"
+  Mog: "../assets/sprites/mog.png",
+  Emperor: "../assets/sprites/emperor.png",
+  Gaurd: "../assets/sprites/narshe_gaurd.png",
+  Kefka: "../assets/sprites/kefka.png"
 };
 
 /**

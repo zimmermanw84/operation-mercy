@@ -9,7 +9,10 @@ const NPC = 2;
 
 const SPRITE_IMG_SRC = {
   Locke: "../assets/sprites/lock_thumb.png",
-  Mog: "../assets/sprites/Mog_Front.gif"
+  Mog: "../assets/sprites/mog.png",
+  Emperor: "../assets/sprites/emperor.png",
+  Gaurd: "../assets/sprites/narshe_gaurd.png",
+  Kefka: "../assets/sprites/kefka.png"
 };
 
 
