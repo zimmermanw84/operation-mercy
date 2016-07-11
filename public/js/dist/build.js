@@ -414,9 +414,8 @@ var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emperor"), new 
 BoardFactory.buildBoard().then(function (Board) {
   var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
   AppCtrl.logBoard();
-})['catch'](function (err) {
-  console.error(err);
 });
+// .catch((err) => { console.error(err); });
 
 },{"./controllers/appController":2,"./controllers/viewController":3,"./models/board":5,"./models/sprite":6}],5:[function(require,module,exports){
 //  Board
@@ -552,8 +551,8 @@ var LOCKE = 1;
 var NPC = 2;
 
 var SPRITE_IMG_SRC = {
-  Locke: "../assets/sprites/lock_thumb.png",
-  Mog: "../assets/sprites/mog.png",
+  Locke: "../assets/sprites/locke_back_1.png",
+  Mog: "../assets/sprites/mog_front.png",
   Emperor: "../assets/sprites/emperor.png",
   Gaurd: "../assets/sprites/narshe_gaurd.png",
   Kefka: "../assets/sprites/kefka.png"
