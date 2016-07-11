@@ -49,8 +49,8 @@ class ViewController {
   }
 
   /**
-  * @private
-  * _bindInitEvents {function}
+  * @public
+  * render {function}
   * add necessary listeners
   */
   render(sprite, npcs) {
@@ -63,7 +63,6 @@ class ViewController {
       this.ctx.clearRect(0, 0, this.width, this.height)
       this.ctx.drawImage(sprite.image, (sprite.x*this.cellPX), (sprite.y*this.cellPX));
 
-      console.log("NPCS", npcs);
       // Draw NPCS
       npcs.forEach((npc) => {
         this.ctx.drawImage(npc.image, (npc.x*this.cellPX), (npc.y*this.cellPX));

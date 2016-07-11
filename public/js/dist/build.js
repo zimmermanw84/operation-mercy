@@ -282,6 +282,7 @@ var AppController = (function () {
       if ([37, 38, 39, 40].indexOf(e.keyCode) !== -1) {
         // Then update sprite on board
         _this2._updateBoard(_this2.hero);
+        // For Development
         _this2.logBoard();
       }
     });
@@ -357,8 +358,8 @@ var ViewController = (function () {
   };
 
   /**
-  * @private
-  * _bindInitEvents {function}
+  * @public
+  * render {function}
   * add necessary listeners
   */
 
@@ -374,7 +375,6 @@ var ViewController = (function () {
       _this.ctx.clearRect(0, 0, _this.width, _this.height);
       _this.ctx.drawImage(sprite.image, sprite.x * _this.cellPX, sprite.y * _this.cellPX);
 
-      console.log("NPCS", npcs);
       // Draw NPCS
       npcs.forEach(function (npc) {
         _this.ctx.drawImage(npc.image, npc.x * _this.cellPX, npc.y * _this.cellPX);

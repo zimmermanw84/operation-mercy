@@ -142,6 +142,7 @@ class AppController {
         if([37, 38, 39, 40].indexOf(e.keyCode) !== -1) {
           // Then update sprite on board
           this._updateBoard(this.hero);
+          // For Development
           this.logBoard();
         }
     });
