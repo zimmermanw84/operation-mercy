@@ -14,7 +14,7 @@ I took a town from FF6 and built a collision map representation. I parse the col
 
 ## Todo:
 - Add animations
-- Add NPCs
+- Get better sprite renderings
 - Add Dialog
 - Improve matrix scale
 - Style
