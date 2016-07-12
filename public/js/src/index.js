@@ -14,8 +14,8 @@ const BoardFactory = new CollisionMatrix;
 
 // Characters
 const hero = new Locke;
-// const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
-const NPCs = [new Npc("Emporer"), new Npc("Mog")];
+const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
+// const NPCs = [new Npc("Emporer"), new Npc("Mog"), new Npc("Gaurd")];
 
 BoardFactory.buildBoard()
   .then((Board) => {

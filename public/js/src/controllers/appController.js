@@ -10,8 +10,8 @@ const [heroX, heroY] = [19, 33];
 const  NPC_STARTING_XY = {
   Mog: { x: 12, y: 14},
   Emporer: { x: 29, y: 9},
-  // Gaurd: { x: 41, y: 15},
-  // Kefka: { x: 54, y: 11}
+  Gaurd: { x: 41, y: 15},
+  Kefka: { x: 54, y: 11}
 }
 /**
 * AppController {object}

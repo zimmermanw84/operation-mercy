@@ -55,7 +55,7 @@ class SpriteBase {
     this.imgSrc = SPRITE_IMG_SRC[this.name][direction][Math.floor(this.currentImgIndex)];
 
     // We don't want to switch imgs every time so we do an incremental tick
-    if(this.tickCount > this.ticksPerFrame) {
+    // if(this.tickCount > this.ticksPerFrame) {
       // Reset if currentImgIndex
       if(this.currentImgIndex >= SPRITE_IMG_SRC[this.name][direction].length - 1) {
         this.currentImgIndex = 0;
@@ -64,10 +64,10 @@ class SpriteBase {
         this.currentImgIndex++;
       }
       // Reset tick count
-      this.tickCount = 0;
-    } else {
-      this.tickCount++;
-    }
+      // this.tickCount = 0;
+    // } else {
+      // this.tickCount++;
+    // }
 
 
 

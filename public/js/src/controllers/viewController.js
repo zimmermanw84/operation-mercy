@@ -1,5 +1,5 @@
 //  Canvas View Controller
-//  public/js/src/canvasVC.js
+//  public/js/src/controllers/viewController.js
 //
 //  Created by Walt Zimmerman on 7/8/16.
 //

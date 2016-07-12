@@ -147,9 +147,19 @@ var SPRITE_IMG_SRC = {
     down: ["../assets/sprites/mog/mog_front_1.png", "../assets/sprites/mog/mog_front_2.png", "../assets/sprites/mog/mog_front_3.png"],
     left: ["../assets/sprites/mog/mog_left_1.png", "../assets/sprites/mog/mog_left_2.png", "../assets/sprites/mog/mog_left_3.png"],
     right: ["../assets/sprites/mog/mog_right_1.png", "../assets/sprites/mog/mog_right_2.png", "../assets/sprites/mog/mog_right_3.png"]
+  },
+  Gaurd: {
+    up: ["../assets/sprites/narshe_gaurd/narshe_back_1.png", "../assets/sprites/narshe_gaurd/narshe_back_2.png", "../assets/sprites/narshe_gaurd/narshe_back_3.png"],
+    down: ["../assets/sprites/narshe_gaurd/narshe_front_1.png", "../assets/sprites/narshe_gaurd/narshe_front_2.png", "../assets/sprites/narshe_gaurd/narshe_front_3.png"],
+    left: ["../assets/sprites/narshe_gaurd/narshe_left_1.png", "../assets/sprites/narshe_gaurd/narshe_left_2.png", "../assets/sprites/narshe_gaurd/narshe_left_3.png"],
+    right: ["../assets/sprites/narshe_gaurd/narshe_right_1.png", "../assets/sprites/narshe_gaurd/narshe_right_2.png", "../assets/sprites/narshe_gaurd/narshe_right_3.png"]
+  },
+  Kefka: {
+    up: ["../assets/sprites/kefka/kefka_back_1.png", "../assets/sprites/kefka/kefka_back_2.png", "../assets/sprites/kefka/kefka_back_3.png"],
+    down: ["../assets/sprites/kefka/kefka_front_1.png", "../assets/sprites/kefka/kefka_front_2.png", "../assets/sprites/kefka/kefka_front_3.png"],
+    left: ["../assets/sprites/kefka/kefka_left_1.png", "../assets/sprites/kefka/kefka_left_2.png", "../assets/sprites/kefka/kefka_left_3.png"],
+    right: ["../assets/sprites/kefka/kefka_right_1.png", "../assets/sprites/kefka/kefka_right_2.png", "../assets/sprites/kefka/kefka_right_3.png"]
   }
-  // Gaurd: "../assets/sprites/narshe_gaurd.png",
-  // Kefka: "../assets/sprites/kefka.png"
 };
 
 exports.SPRITE_IMG_SRC = SPRITE_IMG_SRC;
@@ -173,10 +183,10 @@ var heroY = 33;
 // NPC starting Positions
 var NPC_STARTING_XY = {
   Mog: { x: 12, y: 14 },
-  Emporer: { x: 29, y: 9 }
+  Emporer: { x: 29, y: 9 },
+  Gaurd: { x: 41, y: 15 },
+  Kefka: { x: 54, y: 11 }
 };
-// Gaurd: { x: 41, y: 15},
-// Kefka: { x: 54, y: 11}
 /**
 * AppController {object}
 * @param ViewController {ViewController}
@@ -357,7 +367,7 @@ exports.AppController = AppController;
 
 },{}],4:[function(require,module,exports){
 //  Canvas View Controller
-//  public/js/src/canvasVC.js
+//  public/js/src/controllers/viewController.js
 //
 //  Created by Walt Zimmerman on 7/8/16.
 //
@@ -470,8 +480,8 @@ var BoardFactory = new _modelsBoard.CollisionMatrix();
 
 // Characters
 var hero = new _modelsSprite.Locke();
-// const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
-var NPCs = [new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Mog")];
+var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
+// const NPCs = [new Npc("Emporer"), new Npc("Mog"), new Npc("Gaurd")];
 
 BoardFactory.buildBoard().then(function (Board) {
   var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
@@ -667,19 +677,19 @@ var SpriteBase = (function () {
     this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name][direction][Math.floor(this.currentImgIndex)];
 
     // We don't want to switch imgs every time so we do an incremental tick
-    if (this.tickCount > this.ticksPerFrame) {
-      // Reset if currentImgIndex
-      if (this.currentImgIndex >= _configImg_src.SPRITE_IMG_SRC[this.name][direction].length - 1) {
-        this.currentImgIndex = 0;
-      } else {
-        // Rotate image index
-        this.currentImgIndex++;
-      }
-      // Reset tick count
-      this.tickCount = 0;
+    // if(this.tickCount > this.ticksPerFrame) {
+    // Reset if currentImgIndex
+    if (this.currentImgIndex >= _configImg_src.SPRITE_IMG_SRC[this.name][direction].length - 1) {
+      this.currentImgIndex = 0;
     } else {
-      this.tickCount++;
+      // Rotate image index
+      this.currentImgIndex++;
     }
+    // Reset tick count
+    // this.tickCount = 0;
+    // } else {
+    // this.tickCount++;
+    // }
   };
 
   // Movement Functions
