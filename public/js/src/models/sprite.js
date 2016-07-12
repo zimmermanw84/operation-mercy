@@ -28,6 +28,8 @@ class SpriteBase {
 
     // For rotating sprite images
     this.currentImgIndex = 0;
+    this.tickCount = 0;
+    this.ticksPerFrame = 3;
   }
 
   /**
@@ -41,6 +43,34 @@ class SpriteBase {
 
     this.x = x;
     this.y = y;
+  }
+
+   /**
+  * @private
+  * _rotateImageSrc {function}
+  * Rotate img src for animation
+  */
+  _rotateImageSrc(direction) {
+    // Set img src
+    this.imgSrc = SPRITE_IMG_SRC[this.name][direction][Math.floor(this.currentImgIndex)];
+
+    // We don't want to switch imgs every time so we do an incremental tick
+    if(this.tickCount > this.ticksPerFrame) {
+      // Reset if currentImgIndex
+      if(this.currentImgIndex >= SPRITE_IMG_SRC[this.name][direction].length - 1) {
+        this.currentImgIndex = 0;
+      } else {
+        // Rotate image index
+        this.currentImgIndex++;
+      }
+      // Reset tick count
+      this.tickCount = 0;
+    } else {
+      this.tickCount++;
+    }
+
+
+
   }
 
   // Movement Functions
@@ -92,29 +122,10 @@ class Locke extends SpriteBase {
 
     // px
     this.width = 17;
-    this.height = 29;
+    this.height = 28;
     // Asset
     // Setting starting src
     this.imgSrc = SPRITE_IMG_SRC[this.name].up[this.currentImgIndex];
-  }
-
-  /**
-  * @private
-  * _rotateImageSrc {function}
-  * Rotate img src for animation
-  */
-  _rotateImageSrc(direction) {
-    // Set img src
-    this.imgSrc = SPRITE_IMG_SRC[this.name][direction][this.currentImgIndex];
-
-    // Reset if currentImgIndex
-    if(this.currentImgIndex >= SPRITE_IMG_SRC[this.name][direction].length - 1) {
-      this.currentImgIndex = 0;
-    } else {
-      // Rotate image index
-      this.currentImgIndex++;
-    }
-
   }
 
 }
@@ -136,6 +147,34 @@ class Npc extends SpriteBase {
     // Asset
     this.imgSrc = SPRITE_IMG_SRC[this.name].down[this.currentImgIndex];
   }
+
+  /**
+  * @public
+  * moveRandom {function}
+  * Move in random direction
+  */
+  moveRandom() {
+    let randomSample = (Math.floor(Math.random() * (3 - 0 + 1)));
+
+    switch(randomSample) {
+      case 0:
+        this.moveDown();
+        break;
+      case 1:
+        this.moveUp();
+        break;
+      case 2:
+        this.moveLeft();
+        break;
+      case 3:
+        this.moveRight();
+        break;
+      default:
+        // Don't want to throw: but need to be informed if the case happens
+        console.info("randomSample non movement int");
+    }
+  }
+
 }
 
 export { Locke, Npc }

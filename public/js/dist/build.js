@@ -141,8 +141,13 @@ var SPRITE_IMG_SRC = {
     down: ["../assets/sprites/emporer/emporer_front_1.png", "../assets/sprites/emporer/emporer_front_2.png", "../assets/sprites/emporer/emporer_front_3.png"],
     left: ["../assets/sprites/emporer/emporer_left_1.png", "../assets/sprites/emporer/emporer_left_2.png", "../assets/sprites/emporer/emporer_left_3.png"],
     right: ["../assets/sprites/emporer/emporer_right_1.png", "../assets/sprites/emporer/emporer_right_2.png", "../assets/sprites/emporer/emporer_right_3.png"]
+  },
+  Mog: {
+    up: ["../assets/sprites/mog/mog_back_1.png", "../assets/sprites/mog/mog_back_2.png", "../assets/sprites/mog/mog_back_3.png"],
+    down: ["../assets/sprites/mog/mog_front_1.png", "../assets/sprites/mog/mog_front_2.png", "../assets/sprites/mog/mog_front_3.png"],
+    left: ["../assets/sprites/mog/mog_left_1.png", "../assets/sprites/mog/mog_left_2.png", "../assets/sprites/mog/mog_left_3.png"],
+    right: ["../assets/sprites/mog/mog_right_1.png", "../assets/sprites/mog/mog_right_2.png", "../assets/sprites/mog/mog_right_3.png"]
   }
-  // Mog: "../assets/sprites/mog_front.png",
   // Gaurd: "../assets/sprites/narshe_gaurd.png",
   // Kefka: "../assets/sprites/kefka.png"
 };
@@ -167,7 +172,7 @@ var heroY = 33;
 
 // NPC starting Positions
 var NPC_STARTING_XY = {
-  // Mog: { x: 12, y: 14},
+  Mog: { x: 12, y: 14 },
   Emporer: { x: 29, y: 9 }
 };
 // Gaurd: { x: 41, y: 15},
@@ -191,7 +196,6 @@ var AppController = (function () {
 
     // Initialize
     this._initSprites();
-    this._bindHeroMovement();
   }
 
   /**
@@ -213,10 +217,42 @@ var AppController = (function () {
   */
 
   AppController.prototype._initSprites = function _initSprites() {
+    this._bindHeroMovement();
     this._setInitSpritePosition();
-
-    // console.log("INIT SPRITES hero passed to update", this.hero)
     this._updateBoard(this.hero);
+    this.spriteRandomMovment();
+    this.annimationLoop();
+  };
+
+  /**
+  * @private
+  * spriteRandomMovment {function}
+  * Randomly move sprites around canvis
+  */
+
+  AppController.prototype.spriteRandomMovment = function spriteRandomMovment() {
+    var _this = this;
+
+    setInterval(function () {
+      _this.npcs.forEach(function (npc) {
+        npc.moveRandom();
+        _this._updateBoard(npc);
+      });
+    }, 1000);
+  };
+
+  /**
+  * @private
+  * annimationLoop {function}
+  * Re-render board
+  */
+
+  AppController.prototype.annimationLoop = function annimationLoop() {
+    var _this2 = this;
+
+    setInterval(function () {
+      _this2.VC.render([_this2.hero].concat(_this2.npcs));
+    }, 50 /*frame rate... kinda lol*/);
   };
 
   /**
@@ -226,14 +262,14 @@ var AppController = (function () {
   */
 
   AppController.prototype._setInitSpritePosition = function _setInitSpritePosition() {
-    var _this = this;
+    var _this3 = this;
 
     this.hero.setPosition(heroX, heroY);
     // Set more NPC sprites after
     this.npcs.forEach(function (npc) {
       npc.setPosition(NPC_STARTING_XY[npc.name].x, NPC_STARTING_XY[npc.name].y);
       // Only need to update board during init for npcs
-      _this._updateBoard(npc);
+      _this3._updateBoard(npc);
     });
   };
 
@@ -246,20 +282,9 @@ var AppController = (function () {
   AppController.prototype._updateBoard = function _updateBoard(sprite) {
     // Make sure is coorinates placeable
     if (this._isPlacableOnBoard(sprite)) {
-      // Check to ses if cell is moveable
-      if (this.Board[sprite.y][sprite.x] === 0) {
-        // reset last board position
-        this.Board[sprite.yLast][sprite.xLast] = 0;
-        // Set new position on board
-        this.Board[sprite.y][sprite.x] = sprite;
-      } else {
-        // If not a moveable cell reset sprite position
-        sprite.setPosition(sprite.xLast, sprite.yLast);
-        this.Board[sprite.y][sprite.x] = sprite;
-      }
-
-      // Rerender in view
-      this.VC.render(sprite, this.npcs);
+      this.Board[sprite.yLast][sprite.xLast] = 0;
+      // Set new position on board
+      this.Board[sprite.y][sprite.x] = sprite;
     } else {
       // reset position
       sprite.setPosition(sprite.xLast, sprite.yLast);
@@ -275,7 +300,13 @@ var AppController = (function () {
 
   AppController.prototype._isPlacableOnBoard = function _isPlacableOnBoard(sprite) {
     // MAX Matrix bounds
-    if (sprite.x > 61 || sprite.y > 33) return false;else return true;
+    if (sprite.x > 61 || sprite.y > 33) {
+      return false;
+    } else if (this.Board[sprite.y][sprite.x] !== 0) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   /**
@@ -285,25 +316,25 @@ var AppController = (function () {
   */
 
   AppController.prototype._bindHeroMovement = function _bindHeroMovement() {
-    var _this2 = this;
+    var _this4 = this;
 
     window.addEventListener('keydown', function (e) {
       switch (e.keyCode) {
         case 37:
           console.log("Left", 37);
-          _this2.hero.moveLeft();
+          _this4.hero.moveLeft();
           break;
         case 38:
           console.log("Up", 38);
-          _this2.hero.moveUp();
+          _this4.hero.moveUp();
           break;
         case 39:
           console.log("Right", 39);
-          _this2.hero.moveRight();
+          _this4.hero.moveRight();
           break;
         case 40:
           console.log("Down", 40);
-          _this2.hero.moveDown();
+          _this4.hero.moveDown();
           break;
         default:
           console.log("non movement key");
@@ -311,9 +342,9 @@ var AppController = (function () {
 
       if ([37, 38, 39, 40].indexOf(e.keyCode) !== -1) {
         // Then update sprite on board
-        _this2._updateBoard(_this2.hero);
+        _this4._updateBoard(_this4.hero);
         // For Development
-        _this2.logBoard();
+        // this.logBoard();
       }
     });
   };
@@ -377,7 +408,6 @@ var ViewController = (function () {
     this.canvas = document.createElement("canvas");
     this.canvas.style.position = "absolute";
     this.canvas.style.zIndex = "1";
-    // this.canvas.style.overflow = "scroll";
     this.ctx = this.canvas.getContext("2d");
 
     // Set Props
@@ -393,22 +423,22 @@ var ViewController = (function () {
   * add necessary listeners
   */
 
-  ViewController.prototype.render = function render(sprite, npcs) {
+  ViewController.prototype.render = function render(sprites) {
     var _this = this;
 
     // we can't add the source to the image upon sprite construction or it would load before we add the listener in the VC
-    sprite.image.src = sprite.imgSrc;
+    sprites.map(function (sprite) {
+      sprite.image.src = sprite.imgSrc;
+    });
+    // Clear canvas
+    this.ctx.clearRect(0, 0, this.width, this.height);
 
     // Bind load event
-    sprite.image.onload = function () {
-      // this.ctx.scale(2,2);
-      _this.ctx.clearRect(0, 0, _this.width, _this.height);
-      _this.ctx.drawImage(sprite.image, sprite.x * _this.cellPX, sprite.y * _this.cellPX);
+    sprites[0].image.onload = function () {
 
       // Draw NPCS
-      npcs.forEach(function (npc) {
-        console.log(npc);
-        _this.ctx.drawImage(npc.image, npc.x * _this.cellPX, npc.y * _this.cellPX);
+      sprites.forEach(function (sprite) {
+        _this.ctx.drawImage(sprite.image, sprite.x * _this.cellPX, sprite.y * _this.cellPX);
       });
     };
   };
@@ -441,11 +471,11 @@ var BoardFactory = new _modelsBoard.CollisionMatrix();
 // Characters
 var hero = new _modelsSprite.Locke();
 // const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
-var NPCs = [new _modelsSprite.Npc("Emporer")];
+var NPCs = [new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Mog")];
 
 BoardFactory.buildBoard().then(function (Board) {
   var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
-  AppCtrl.logBoard();
+  // AppCtrl.logBoard();
 })['catch'](function (err) {
   console.error(err);
 });
@@ -608,6 +638,8 @@ var SpriteBase = (function () {
 
     // For rotating sprite images
     this.currentImgIndex = 0;
+    this.tickCount = 0;
+    this.ticksPerFrame = 3;
   }
 
   /**
@@ -622,6 +654,32 @@ var SpriteBase = (function () {
 
     this.x = x;
     this.y = y;
+  };
+
+  /**
+  * @private
+  * _rotateImageSrc {function}
+  * Rotate img src for animation
+  */
+
+  SpriteBase.prototype._rotateImageSrc = function _rotateImageSrc(direction) {
+    // Set img src
+    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name][direction][Math.floor(this.currentImgIndex)];
+
+    // We don't want to switch imgs every time so we do an incremental tick
+    if (this.tickCount > this.ticksPerFrame) {
+      // Reset if currentImgIndex
+      if (this.currentImgIndex >= _configImg_src.SPRITE_IMG_SRC[this.name][direction].length - 1) {
+        this.currentImgIndex = 0;
+      } else {
+        // Rotate image index
+        this.currentImgIndex++;
+      }
+      // Reset tick count
+      this.tickCount = 0;
+    } else {
+      this.tickCount++;
+    }
   };
 
   // Movement Functions
@@ -686,7 +744,7 @@ var Locke = (function (_SpriteBase) {
 
     // px
     this.width = 17;
-    this.height = 29;
+    this.height = 28;
     // Asset
     // Setting starting src
     this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name].up[this.currentImgIndex];
@@ -697,26 +755,6 @@ var Locke = (function (_SpriteBase) {
   * @params type {ENUM}
   * Locke - Main Char
   */
-
-  /**
-  * @private
-  * _rotateImageSrc {function}
-  * Rotate img src for animation
-  */
-
-  Locke.prototype._rotateImageSrc = function _rotateImageSrc(direction) {
-    // Set img src
-    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name][direction][this.currentImgIndex];
-
-    // Reset if currentImgIndex
-    if (this.currentImgIndex >= _configImg_src.SPRITE_IMG_SRC[this.name][direction].length - 1) {
-      this.currentImgIndex = 0;
-    } else {
-      // Rotate image index
-      this.currentImgIndex++;
-    }
-  };
-
   return Locke;
 })(SpriteBase);
 
@@ -738,6 +776,34 @@ var Npc = (function (_SpriteBase2) {
     // Asset
     this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name].down[this.currentImgIndex];
   }
+
+  /**
+  * @public
+  * moveRandom {function}
+  * Move in random direction
+  */
+
+  Npc.prototype.moveRandom = function moveRandom() {
+    var randomSample = Math.floor(Math.random() * (3 - 0 + 1));
+
+    switch (randomSample) {
+      case 0:
+        this.moveDown();
+        break;
+      case 1:
+        this.moveUp();
+        break;
+      case 2:
+        this.moveLeft();
+        break;
+      case 3:
+        this.moveRight();
+        break;
+      default:
+        // Don't want to throw: but need to be informed if the case happens
+        console.info("randomSample non movement int");
+    }
+  };
 
   return Npc;
 })(SpriteBase);

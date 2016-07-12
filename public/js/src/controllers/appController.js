@@ -8,7 +8,7 @@
 const [heroX, heroY] = [19, 33];
 // NPC starting Positions
 const  NPC_STARTING_XY = {
-  // Mog: { x: 12, y: 14},
+  Mog: { x: 12, y: 14},
   Emporer: { x: 29, y: 9},
   // Gaurd: { x: 41, y: 15},
   // Kefka: { x: 54, y: 11}
@@ -29,7 +29,6 @@ class AppController {
 
     // Initialize
     this._initSprites();
-    this._bindHeroMovement();
   }
 
   /**
@@ -49,10 +48,36 @@ class AppController {
   * Put sprites into play
   */
   _initSprites() {
+    this._bindHeroMovement();
     this._setInitSpritePosition();
-
-    // console.log("INIT SPRITES hero passed to update", this.hero)
     this._updateBoard(this.hero);
+    this.spriteRandomMovment();
+    this.annimationLoop();
+  }
+
+  /**
+  * @private
+  * spriteRandomMovment {function}
+  * Randomly move sprites around canvis
+  */
+  spriteRandomMovment() {
+    setInterval(() => {
+      this.npcs.forEach((npc) => {
+        npc.moveRandom()
+        this._updateBoard(npc);
+      });
+    }, 1000);
+  }
+
+  /**
+  * @private
+  * annimationLoop {function}
+  * Re-render board
+  */
+  annimationLoop() {
+    setInterval(() => {
+      this.VC.render([this.hero].concat(this.npcs));
+    }, 50/*frame rate... kinda lol*/);
   }
 
   /**
@@ -78,20 +103,9 @@ class AppController {
   _updateBoard(sprite) {
     // Make sure is coorinates placeable
     if(this._isPlacableOnBoard(sprite)) {
-      // Check to ses if cell is moveable
-      if(this.Board[sprite.y][sprite.x] === 0) {
-        // reset last board position
         this.Board[sprite.yLast][sprite.xLast] = 0;
         // Set new position on board
         this.Board[sprite.y][sprite.x] = sprite;
-      } else {
-        // If not a moveable cell reset sprite position
-        sprite.setPosition(sprite.xLast, sprite.yLast);
-        this.Board[sprite.y][sprite.x] = sprite;
-      }
-
-      // Rerender in view
-      this.VC.render(sprite, this.npcs);
     } else {
       // reset position
       sprite.setPosition(sprite.xLast, sprite.yLast);
@@ -107,8 +121,13 @@ class AppController {
   */
   _isPlacableOnBoard(sprite) {
     // MAX Matrix bounds
-    if(sprite.x > 61 || sprite.y > 33) return false;
-    else return true;
+    if(sprite.x > 61 || sprite.y > 33) {
+      return false;
+    } else if (this.Board[sprite.y][sprite.x] !== 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
@@ -143,7 +162,7 @@ class AppController {
           // Then update sprite on board
           this._updateBoard(this.hero);
           // For Development
-          this.logBoard();
+          // this.logBoard();
         }
     });
   }

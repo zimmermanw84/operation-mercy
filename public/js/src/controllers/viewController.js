@@ -38,7 +38,6 @@ class ViewController {
     this.canvas = document.createElement("canvas");
     this.canvas.style.position = "absolute";
     this.canvas.style.zIndex = "1";
-    // this.canvas.style.overflow = "scroll";
     this.ctx = this.canvas.getContext("2d");
 
     // Set Props
@@ -53,27 +52,23 @@ class ViewController {
   * render {function}
   * add necessary listeners
   */
-  render(sprite, npcs) {
+  render(sprites) {
     // we can't add the source to the image upon sprite construction or it would load before we add the listener in the VC
-    sprite.image.src = sprite.imgSrc;
+    sprites.map((sprite) => { sprite.image.src = sprite.imgSrc});
+    // Clear canvas
+    this.ctx.clearRect(0, 0, this.width, this.height)
 
     // Bind load event
-    sprite.image.onload = () => {
-      // this.ctx.scale(2,2);
-      this.ctx.clearRect(0, 0, this.width, this.height)
-      this.ctx.drawImage(sprite.image, (sprite.x*this.cellPX), (sprite.y*this.cellPX));
+    sprites[0].image.onload = () => {
 
       // Draw NPCS
-      npcs.forEach((npc) => {
-        console.log(npc)
-        this.ctx.drawImage(npc.image, (npc.x*this.cellPX), (npc.y*this.cellPX));
+      sprites.forEach((sprite) => {
+        this.ctx.drawImage(sprite.image, (sprite.x*this.cellPX), (sprite.y*this.cellPX));
       });
 
     }
   }
 
 }
-
-
 
 export { ViewController }
