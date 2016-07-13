@@ -16,9 +16,13 @@ const OVERLAY_TYPES = {
 */
 class Overlay {
   constructor(type) {
-    this.type = OVERLAY_TYPES[type];
-    this.element = document.getElementById(this.type);
-    this.isActive = false;
+    this.type = type;
+    this.typeId = OVERLAY_TYPES[type];
+    this.element = document.getElementById(this.typeId);
+    this.isActive;
+
+    // Initialize
+    this._init();
   }
 
   /**
@@ -27,7 +31,7 @@ class Overlay {
   * Initialize overlay
   */
   _init() {
-
+    this._getInitDisplayState();
   }
 
   /**
@@ -36,12 +40,48 @@ class Overlay {
   * Show or Hide
   */
   toggleOverlay() {
-    if(this.isActive) {
-      this.element.style.display === "none";
-      this.isActive = false;
-    } else {
-      this.element.style.display === "block";
-      this.isActive = true;
+    if(this.isActive) this._hide();
+    else this._show();
+  }
+
+  /**
+  * @private
+  * _show {function}
+  * Show
+  */
+  _show() {
+    this.element.style.display === "block";
+    this.isActive = true;
+  }
+
+  /**
+  * @private
+  * _hide {function}
+  * Hide
+  */
+  _hide() {
+    this.element.style.display === "none";
+    this.isActive = false;
+  }
+
+  /**
+  * @private
+  * _getInitDisplayState {function}
+  * Based on type determine if displayed or not
+  */
+  _getInitDisplayState() {
+    switch(this.type) {
+      case 'intro':
+        this._show();
+        break;
+      case 'dialog':
+        this._hide();
+        break;
+      default:
+        console.error("_getInitDisplayState: No Type");
     }
   }
+
 }
+
+export { Overlay }

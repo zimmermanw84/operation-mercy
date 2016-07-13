@@ -11,12 +11,18 @@ const Promise = Q.Promise;
 
 /**
 * ViewController {object}
+* @param overlays {Array} - Overlay objects to control intro overlay and dialog box
 * @params height {Number}, width {Number} - Optional
 */
 
 class ViewController {
 
-  constructor(height, width, backgroundImgSrc) {
+  constructor(overlays={},height, width) {
+    // Overlay props
+    this.introOverlay = overlays["intro"];
+    this.dialogOverlay;
+
+    // Hard coded for background img dimensions
     this.height = 768 || height; // height of background image
     this.width = 1366 || width; // width of background image
     this.cellPX = 21.5;
@@ -39,7 +45,6 @@ class ViewController {
     this.canvas.style.position = "absolute";
     this.canvas.style.zIndex = "1";
     this.ctx = this.canvas.getContext("2d");
-
     // Set Props
     this.canvas.width = this.width;
     this.canvas.height = this.height;

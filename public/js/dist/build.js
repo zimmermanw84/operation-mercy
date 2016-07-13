@@ -355,6 +355,10 @@ var AppController = (function () {
         _this4._updateBoard(_this4.hero);
         // For Development
         // this.logBoard();
+        if (_this4.VC.introOverlay.isActive) {
+          // Hide on user input
+          _this4.VC.introOverlay.toggleOverlay();
+        }
       }
     });
   };
@@ -389,13 +393,21 @@ var Promise = _vendorQ2["default"].Promise;
 
 /**
 * ViewController {object}
+* @param overlays {Array} - Overlay objects to control intro overlay and dialog box
 * @params height {Number}, width {Number} - Optional
 */
 
 var ViewController = (function () {
-  function ViewController(height, width, backgroundImgSrc) {
+  function ViewController(overlays, height, width) {
+    if (overlays === undefined) overlays = {};
+
     _classCallCheck(this, ViewController);
 
+    // Overlay props
+    this.introOverlay = overlays["intro"];
+    this.dialogOverlay;
+
+    // Hard coded for background img dimensions
     this.height = 768 || height; // height of background image
     this.width = 1366 || width; // width of background image
     this.cellPX = 21.5;
@@ -419,7 +431,6 @@ var ViewController = (function () {
     this.canvas.style.position = "absolute";
     this.canvas.style.zIndex = "1";
     this.ctx = this.canvas.getContext("2d");
-
     // Set Props
     this.canvas.width = this.width;
     this.canvas.height = this.height;
@@ -458,30 +469,36 @@ var ViewController = (function () {
 
 exports.ViewController = ViewController;
 
-},{"../../vendor/Q":8}],5:[function(require,module,exports){
+},{"../../vendor/Q":9}],5:[function(require,module,exports){
 //  Index
 //  public/js/src/index.js
 //
 //  Created by Walt Zimmerman on 7/6/16.
 //
 
+// Models
 'use strict';
 
 var _modelsSprite = require('./models/sprite');
+
+var _modelsBoard = require('./models/board');
+
+var _modelsOverlay = require('./models/overlay');
+
+// Controllers
 
 var _controllersViewController = require('./controllers/viewController');
 
 var _controllersAppController = require('./controllers/appController');
 
-var _modelsBoard = require('./models/board');
-
-var viewController = new _controllersViewController.ViewController();
-var BoardFactory = new _modelsBoard.CollisionMatrix();
-
 // Characters
 var hero = new _modelsSprite.Locke();
 var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
-// const NPCs = [new Npc("Emporer"), new Npc("Mog"), new Npc("Gaurd")];
+// Overlays
+// const overlays = {intro: new Overlay("intro")};
+// Locals
+var viewController = new _controllersViewController.ViewController(overlays);
+var BoardFactory = new _modelsBoard.CollisionMatrix();
 
 BoardFactory.buildBoard().then(function (Board) {
   var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
@@ -490,7 +507,7 @@ BoardFactory.buildBoard().then(function (Board) {
   console.error(err);
 });
 
-},{"./controllers/appController":3,"./controllers/viewController":4,"./models/board":6,"./models/sprite":7}],6:[function(require,module,exports){
+},{"./controllers/appController":3,"./controllers/viewController":4,"./models/board":6,"./models/overlay":7,"./models/sprite":8}],6:[function(require,module,exports){
 //  Board
 //  public/js/src/models/board.js
 //
@@ -605,7 +622,110 @@ var CollisionMatrix = (function () {
 
 exports.CollisionMatrix = CollisionMatrix;
 
-},{"../../vendor/Q":8}],7:[function(require,module,exports){
+},{"../../vendor/Q":9}],7:[function(require,module,exports){
+//  Models
+//  public/js/src/models/overlay.js
+//
+//  Created by Walt Zimmerman on 7/12/16.
+//
+
+// OVERLAY TYPES - HTML IDS
+"use strict";
+
+exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var OVERLAY_TYPES = {
+  intro: "overlay-intro",
+  dialog: "overlay-dialog"
+};
+
+/**
+* Overlay {object}
+* @param - type
+*/
+
+var Overlay = (function () {
+  function Overlay(type) {
+    _classCallCheck(this, Overlay);
+
+    this.type = type;
+    this.typeId = OVERLAY_TYPES[type];
+    this.element = document.getElementById(this.typeId);
+    this.isActive;
+
+    // Initialize
+    this._init();
+  }
+
+  /**
+  * @private
+  * _init {function}
+  * Initialize overlay
+  */
+
+  Overlay.prototype._init = function _init() {
+    this._getInitDisplayState();
+  };
+
+  /**
+  * @public
+  * toggleOverlay {function}
+  * Show or Hide
+  */
+
+  Overlay.prototype.toggleOverlay = function toggleOverlay() {
+    if (this.isActive) this._hide();else this._show();
+  };
+
+  /**
+  * @private
+  * _show {function}
+  * Show
+  */
+
+  Overlay.prototype._show = function _show() {
+    this.element.style.display === "block";
+    this.isActive = true;
+  };
+
+  /**
+  * @private
+  * _hide {function}
+  * Hide
+  */
+
+  Overlay.prototype._hide = function _hide() {
+    this.element.style.display === "none";
+    this.isActive = false;
+  };
+
+  /**
+  * @private
+  * _getInitDisplayState {function}
+  * Based on type determine if displayed or not
+  */
+
+  Overlay.prototype._getInitDisplayState = function _getInitDisplayState() {
+    switch (this.type) {
+      case 'intro':
+        this._show();
+        break;
+      case 'dialog':
+        this._hide();
+        break;
+      default:
+        console.error("_getInitDisplayState: No Type");
+    }
+  };
+
+  return Overlay;
+})();
+
+exports.Overlay = Overlay;
+
+},{}],8:[function(require,module,exports){
 //  Models
 //  public/js/src/models.js
 //
@@ -821,7 +941,7 @@ var Npc = (function (_SpriteBase2) {
 exports.Locke = Locke;
 exports.Npc = Npc;
 
-},{"../config/img_src":2}],8:[function(require,module,exports){
+},{"../config/img_src":2}],9:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 "use strict";

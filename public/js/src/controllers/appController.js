@@ -163,6 +163,10 @@ class AppController {
           this._updateBoard(this.hero);
           // For Development
           // this.logBoard();
+          if(this.VC.introOverlay.isActive) {
+            // Hide on user input
+            this.VC.introOverlay.toggleOverlay();
+          }
         }
     });
   }

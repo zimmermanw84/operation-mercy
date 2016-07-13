@@ -4,18 +4,24 @@
 //  Created by Walt Zimmerman on 7/6/16.
 //
 
+// Models
 import { Locke, Npc } from './models/sprite';
+import { CollisionMatrix } from './models/board';
+import { Overlay } from './models/overlay';
+
+// Controllers
 import { ViewController } from './controllers/viewController';
 import { AppController } from './controllers/appController';
-import { CollisionMatrix } from './models/board';
 
-const viewController = new ViewController;
-const BoardFactory = new CollisionMatrix;
 
 // Characters
 const hero = new Locke;
 const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
-// const NPCs = [new Npc("Emporer"), new Npc("Mog"), new Npc("Gaurd")];
+// Overlays
+const overlays = {intro: new Overlay("intro")};
+// Locals
+const viewController = new ViewController(overlays);
+const BoardFactory = new CollisionMatrix;
 
 BoardFactory.buildBoard()
   .then((Board) => {
