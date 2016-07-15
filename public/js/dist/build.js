@@ -329,6 +329,7 @@ var AppController = (function () {
     var _this4 = this;
 
     window.addEventListener('keydown', function (e) {
+
       switch (e.keyCode) {
         case 37:
           console.log("Left", 37);
@@ -346,6 +347,13 @@ var AppController = (function () {
           console.log("Down", 40);
           _this4.hero.moveDown();
           break;
+        case 32:
+          // For exiting overlays
+          if (_this4.VC.introOverlay.isActive) {
+            // Intro overlay
+            _this4.VC.introOverlay.toggleOverlay();
+          }
+          break;
         default:
           console.log("non movement key");
       }
@@ -355,10 +363,6 @@ var AppController = (function () {
         _this4._updateBoard(_this4.hero);
         // For Development
         // this.logBoard();
-        if (_this4.VC.introOverlay.isActive) {
-          // Hide on user input
-          _this4.VC.introOverlay.toggleOverlay();
-        }
       }
     });
   };
@@ -470,7 +474,7 @@ var ViewController = (function () {
 exports.ViewController = ViewController;
 
 },{"../../vendor/Q":9}],5:[function(require,module,exports){
-//  Index
+// Index
 //  public/js/src/index.js
 //
 //  Created by Walt Zimmerman on 7/6/16.
@@ -495,7 +499,7 @@ var _controllersAppController = require('./controllers/appController');
 var hero = new _modelsSprite.Locke();
 var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
 // Overlays
-// const overlays = {intro: new Overlay("intro")};
+var overlays = { intro: new _modelsOverlay.Overlay("intro") };
 // Locals
 var viewController = new _controllersViewController.ViewController(overlays);
 var BoardFactory = new _modelsBoard.CollisionMatrix();
@@ -686,7 +690,7 @@ var Overlay = (function () {
   */
 
   Overlay.prototype._show = function _show() {
-    this.element.style.display === "block";
+    this.element.style.display = "block";
     this.isActive = true;
   };
 
@@ -697,7 +701,7 @@ var Overlay = (function () {
   */
 
   Overlay.prototype._hide = function _hide() {
-    this.element.style.display === "none";
+    this.element.style.display = "none";
     this.isActive = false;
   };
 

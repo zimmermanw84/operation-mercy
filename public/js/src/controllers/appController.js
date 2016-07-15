@@ -137,6 +137,7 @@ class AppController {
   */
   _bindHeroMovement() {
     window.addEventListener('keydown', (e) => {
+
         switch(e.keyCode) {
           case 37:
             console.log("Left", 37);
@@ -154,6 +155,13 @@ class AppController {
             console.log("Down", 40)
             this.hero.moveDown();
             break;
+          case 32:
+            // For exiting overlays
+            if(this.VC.introOverlay.isActive) {
+              // Intro overlay
+              this.VC.introOverlay.toggleOverlay();
+            }
+            break;
           default:
             console.log("non movement key");
         }
@@ -163,10 +171,6 @@ class AppController {
           this._updateBoard(this.hero);
           // For Development
           // this.logBoard();
-          if(this.VC.introOverlay.isActive) {
-            // Hide on user input
-            this.VC.introOverlay.toggleOverlay();
-          }
         }
     });
   }

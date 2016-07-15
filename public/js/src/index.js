@@ -1,4 +1,4 @@
-//  Index
+// Index
 //  public/js/src/index.js
 //
 //  Created by Walt Zimmerman on 7/6/16.

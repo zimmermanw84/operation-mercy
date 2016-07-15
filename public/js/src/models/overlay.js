@@ -50,7 +50,7 @@ class Overlay {
   * Show
   */
   _show() {
-    this.element.style.display === "block";
+    this.element.style.display = "block";
     this.isActive = true;
   }
 
@@ -60,7 +60,7 @@ class Overlay {
   * Hide
   */
   _hide() {
-    this.element.style.display === "none";
+    this.element.style.display = "none";
     this.isActive = false;
   }
 
