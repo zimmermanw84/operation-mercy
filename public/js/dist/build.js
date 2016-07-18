@@ -177,6 +177,17 @@ exports.__esModule = true;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// Import for type checking
+
+var _modelsSprite = require("../models/sprite");
+
+/**
+* AppController {object}
+* @param ViewController {ViewController}
+* @param Board {Board} - Map Matrix
+* @param hero {Locke} - Locke Sprite object
+* @param npcs {Array, NPC} - Array of npcs
+*/
 var heroX = 19;
 var heroY = 33;
 
@@ -187,14 +198,6 @@ var NPC_STARTING_XY = {
   Gaurd: { x: 41, y: 15 },
   Kefka: { x: 54, y: 11 }
 };
-/**
-* AppController {object}
-* @param ViewController {ViewController}
-* @param Board {Board} - Map Matrix
-* @param hero {Locke} - Locke Sprite object
-* @param npcs {Array, NPC} - Array of npcs
-*/
-
 var AppController = (function () {
   function AppController(ViewController, Board, hero, npcs) {
     _classCallCheck(this, AppController);
@@ -303,6 +306,35 @@ var AppController = (function () {
 
   /**
   * @private
+  * _tryHeroTalkToNPC {function}
+  * Attempt to talk to npc
+  */
+
+  AppController.prototype._tryHeroTalkToNPC = function _tryHeroTalkToNPC() {
+    var hX = this.hero.x;
+    var hY = this.hero.y;
+
+    /*
+      Check all directional cases
+      NOTE:
+      A way to optimize this would be to find which
+      direction the char is facing and only check that side
+    */
+    // Fall through
+    switch (true) {
+      // WIP
+      // case (typeof this.Board[hY + 1][hX] === typeof NPC);
+      // case (typeof this.Board[hY - 1][hX] === typeof NPC);
+      // case (typeof this.Board[hY][hX + 1] === typeof NPC);
+      // case (typeof this.Board[hY][hX - 1] === typeof NPC);
+      default:
+      // Render dialog layover
+
+    }
+  };
+
+  /**
+  * @private
   * _isPlacableOnBoard {function}
   * @return {Bool}
   * @param {Sprite}
@@ -373,7 +405,7 @@ var AppController = (function () {
 exports.AppController = AppController;
 // Hero/Locke Starting position
 
-},{}],4:[function(require,module,exports){
+},{"../models/sprite":8}],4:[function(require,module,exports){
 //  Canvas View Controller
 //  public/js/src/controllers/viewController.js
 //
@@ -801,19 +833,12 @@ var SpriteBase = (function () {
     this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name][direction][Math.floor(this.currentImgIndex)];
 
     // We don't want to switch imgs every time so we do an incremental tick
-    // if(this.tickCount > this.ticksPerFrame) {
-    // Reset if currentImgIndex
     if (this.currentImgIndex >= _configImg_src.SPRITE_IMG_SRC[this.name][direction].length - 1) {
       this.currentImgIndex = 0;
     } else {
       // Rotate image index
       this.currentImgIndex++;
     }
-    // Reset tick count
-    // this.tickCount = 0;
-    // } else {
-    // this.tickCount++;
-    // }
   };
 
   // Movement Functions

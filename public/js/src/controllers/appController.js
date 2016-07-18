@@ -13,6 +13,10 @@ const  NPC_STARTING_XY = {
   Gaurd: { x: 41, y: 15},
   Kefka: { x: 54, y: 11}
 }
+
+// Import for type checking
+import { NPC } from "../models/sprite";
+
 /**
 * AppController {object}
 * @param ViewController {ViewController}
@@ -111,6 +115,33 @@ class AppController {
       sprite.setPosition(sprite.xLast, sprite.yLast);
     }
 
+  }
+
+  /**
+  * @private
+  * _tryHeroTalkToNPC {function}
+  * Attempt to talk to npc
+  */
+  _tryHeroTalkToNPC() {
+    let [hX,hY] = [this.hero.x, this.hero.y];
+
+    /*
+      Check all directional cases
+      NOTE:
+      A way to optimize this would be to find which
+      direction the char is facing and only check that side
+    */
+    // Fall through
+    switch(true) {
+      // WIP
+      // case (typeof this.Board[hY + 1][hX] === typeof NPC);
+      // case (typeof this.Board[hY - 1][hX] === typeof NPC);
+      // case (typeof this.Board[hY][hX + 1] === typeof NPC);
+      // case (typeof this.Board[hY][hX - 1] === typeof NPC);
+      default:
+        // Render dialog layover
+
+    }
   }
 
    /**
