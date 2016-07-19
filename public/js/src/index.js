@@ -18,7 +18,7 @@ import { AppController } from './controllers/appController';
 const hero = new Locke;
 const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
 // Overlays
-const overlays = {intro: new Overlay("intro")};
+const overlays = {intro: new Overlay("intro"), dialog: new Overlay("dialog")};
 // Locals
 const viewController = new ViewController(overlays);
 const BoardFactory = new CollisionMatrix;

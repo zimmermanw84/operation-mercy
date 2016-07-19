@@ -15,7 +15,7 @@ const  NPC_STARTING_XY = {
 }
 
 // Import for type checking
-import { NPC } from "../models/sprite";
+import { Npc } from "../models/sprite";
 
 /**
 * AppController {object}
@@ -30,6 +30,9 @@ class AppController {
     this.Board = Board;
     this.hero = hero;
     this.npcs = npcs || [];
+
+    // Track random movement
+    this.isSpriteMovementActive = false;
 
     // Initialize
     this._initSprites();
@@ -55,8 +58,8 @@ class AppController {
     this._bindHeroMovement();
     this._setInitSpritePosition();
     this._updateBoard(this.hero);
-    this.spriteRandomMovment();
-    this.annimationLoop();
+    this._spriteRandomMovment();
+    this._annimationLoop();
   }
 
   /**
@@ -64,13 +67,25 @@ class AppController {
   * spriteRandomMovment {function}
   * Randomly move sprites around canvis
   */
-  spriteRandomMovment() {
-    setInterval(() => {
+  _spriteRandomMovment() {
+    this.spriteMovement = setInterval(() => {
       this.npcs.forEach((npc) => {
         npc.moveRandom()
         this._updateBoard(npc);
       });
     }, 1000);
+
+    this.isSpriteMovementActive = true;
+  }
+
+  /**
+  * @private
+  * _stopSpriteMovment {function}
+  * Stop sprite movement board
+  */
+  _stopSpriteMovment() {
+    clearInterval(this.spriteMovement);
+    this.isSpriteMovementActive = false;
   }
 
   /**
@@ -78,7 +93,7 @@ class AppController {
   * annimationLoop {function}
   * Re-render board
   */
-  annimationLoop() {
+  _annimationLoop() {
     setInterval(() => {
       this.VC.render([this.hero].concat(this.npcs));
     }, 50/*frame rate... kinda lol*/);
@@ -123,8 +138,6 @@ class AppController {
   * Attempt to talk to npc
   */
   _tryHeroTalkToNPC() {
-    let [hX,hY] = [this.hero.x, this.hero.y];
-
     /*
       Check all directional cases
       NOTE:
@@ -133,14 +146,18 @@ class AppController {
     */
     // Fall through
     switch(true) {
-      // WIP
-      // case (typeof this.Board[hY + 1][hX] === typeof NPC);
-      // case (typeof this.Board[hY - 1][hX] === typeof NPC);
-      // case (typeof this.Board[hY][hX + 1] === typeof NPC);
-      // case (typeof this.Board[hY][hX - 1] === typeof NPC);
-      default:
-        // Render dialog layover
-
+      case (this.Board[(this.hero.y + 1)][this.hero.x] instanceof Npc):
+      case (this.Board[(this.hero.y - 1)][this.hero.x] instanceof Npc):
+      case (this.Board[this.hero.y][(this.hero.x + 1)] instanceof Npc):
+      case (this.Board[this.hero.y][(this.hero.x - 1)] instanceof Npc):
+        // If overlay is active then toggle and start movement
+        if(!this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
+          this._stopSpriteMovment();
+          this.VC.dialogOverlay.toggleOverlay();
+        } else {
+          this.VC.dialogOverlay.toggleOverlay();
+          this._spriteRandomMovment();
+        }
     }
   }
 
@@ -167,31 +184,37 @@ class AppController {
   * bind keyboard event for hero movement
   */
   _bindHeroMovement() {
+    // Enum movement keycodes
+    const LEFT = 37;
+    const UP = 38;
+    const RIGHT = 39;
+    const DOWN = 40;
+    const SPACE = 32;
+
     window.addEventListener('keydown', (e) => {
 
         switch(e.keyCode) {
-          case 37:
-            console.log("Left", 37);
+          case LEFT:
             this.hero.moveLeft();
             break;
-          case 38:
-            console.log("Up", 38)
+          case UP:
             this.hero.moveUp();
             break;
-          case 39:
-            console.log("Right", 39)
+          case RIGHT:
             this.hero.moveRight();
             break;
-          case 40:
-            console.log("Down", 40)
+          case DOWN:
             this.hero.moveDown();
             break;
-          case 32:
+          case SPACE:
             // For exiting overlays
             if(this.VC.introOverlay.isActive) {
               // Intro overlay
               this.VC.introOverlay.toggleOverlay();
             }
+
+            // Try and talk to npc
+            this._tryHeroTalkToNPC();
             break;
           default:
             console.log("non movement key");

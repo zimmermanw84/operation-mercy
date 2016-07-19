@@ -207,6 +207,9 @@ var AppController = (function () {
     this.hero = hero;
     this.npcs = npcs || [];
 
+    // Track random movement
+    this.isSpriteMovementActive = false;
+
     // Initialize
     this._initSprites();
   }
@@ -233,8 +236,8 @@ var AppController = (function () {
     this._bindHeroMovement();
     this._setInitSpritePosition();
     this._updateBoard(this.hero);
-    this.spriteRandomMovment();
-    this.annimationLoop();
+    this._spriteRandomMovment();
+    this._annimationLoop();
   };
 
   /**
@@ -243,15 +246,28 @@ var AppController = (function () {
   * Randomly move sprites around canvis
   */
 
-  AppController.prototype.spriteRandomMovment = function spriteRandomMovment() {
+  AppController.prototype._spriteRandomMovment = function _spriteRandomMovment() {
     var _this = this;
 
-    setInterval(function () {
+    this.spriteMovement = setInterval(function () {
       _this.npcs.forEach(function (npc) {
         npc.moveRandom();
         _this._updateBoard(npc);
       });
     }, 1000);
+
+    this.isSpriteMovementActive = true;
+  };
+
+  /**
+  * @private
+  * _stopSpriteMovment {function}
+  * Stop sprite movement board
+  */
+
+  AppController.prototype._stopSpriteMovment = function _stopSpriteMovment() {
+    clearInterval(this.spriteMovement);
+    this.isSpriteMovementActive = false;
   };
 
   /**
@@ -260,7 +276,7 @@ var AppController = (function () {
   * Re-render board
   */
 
-  AppController.prototype.annimationLoop = function annimationLoop() {
+  AppController.prototype._annimationLoop = function _annimationLoop() {
     var _this2 = this;
 
     setInterval(function () {
@@ -311,9 +327,6 @@ var AppController = (function () {
   */
 
   AppController.prototype._tryHeroTalkToNPC = function _tryHeroTalkToNPC() {
-    var hX = this.hero.x;
-    var hY = this.hero.y;
-
     /*
       Check all directional cases
       NOTE:
@@ -322,14 +335,18 @@ var AppController = (function () {
     */
     // Fall through
     switch (true) {
-      // WIP
-      // case (typeof this.Board[hY + 1][hX] === typeof NPC);
-      // case (typeof this.Board[hY - 1][hX] === typeof NPC);
-      // case (typeof this.Board[hY][hX + 1] === typeof NPC);
-      // case (typeof this.Board[hY][hX - 1] === typeof NPC);
-      default:
-      // Render dialog layover
-
+      case this.Board[this.hero.y + 1][this.hero.x] instanceof _modelsSprite.Npc:
+      case this.Board[this.hero.y - 1][this.hero.x] instanceof _modelsSprite.Npc:
+      case this.Board[this.hero.y][this.hero.x + 1] instanceof _modelsSprite.Npc:
+      case this.Board[this.hero.y][this.hero.x - 1] instanceof _modelsSprite.Npc:
+        // If overlay is active then toggle and start movement
+        if (!this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
+          this._stopSpriteMovment();
+          this.VC.dialogOverlay.toggleOverlay();
+        } else {
+          this.VC.dialogOverlay.toggleOverlay();
+          this._spriteRandomMovment();
+        }
     }
   };
 
@@ -360,31 +377,37 @@ var AppController = (function () {
   AppController.prototype._bindHeroMovement = function _bindHeroMovement() {
     var _this4 = this;
 
+    // Enum movement keycodes
+    var LEFT = 37;
+    var UP = 38;
+    var RIGHT = 39;
+    var DOWN = 40;
+    var SPACE = 32;
+
     window.addEventListener('keydown', function (e) {
 
       switch (e.keyCode) {
-        case 37:
-          console.log("Left", 37);
+        case LEFT:
           _this4.hero.moveLeft();
           break;
-        case 38:
-          console.log("Up", 38);
+        case UP:
           _this4.hero.moveUp();
           break;
-        case 39:
-          console.log("Right", 39);
+        case RIGHT:
           _this4.hero.moveRight();
           break;
-        case 40:
-          console.log("Down", 40);
+        case DOWN:
           _this4.hero.moveDown();
           break;
-        case 32:
+        case SPACE:
           // For exiting overlays
           if (_this4.VC.introOverlay.isActive) {
             // Intro overlay
             _this4.VC.introOverlay.toggleOverlay();
           }
+
+          // Try and talk to npc
+          _this4._tryHeroTalkToNPC();
           break;
         default:
           console.log("non movement key");
@@ -441,7 +464,7 @@ var ViewController = (function () {
 
     // Overlay props
     this.introOverlay = overlays["intro"];
-    this.dialogOverlay;
+    this.dialogOverlay = overlays["dialog"];
 
     // Hard coded for background img dimensions
     this.height = 768 || height; // height of background image
@@ -531,7 +554,7 @@ var _controllersAppController = require('./controllers/appController');
 var hero = new _modelsSprite.Locke();
 var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
 // Overlays
-var overlays = { intro: new _modelsOverlay.Overlay("intro") };
+var overlays = { intro: new _modelsOverlay.Overlay("intro"), dialog: new _modelsOverlay.Overlay("dialog") };
 // Locals
 var viewController = new _controllersViewController.ViewController(overlays);
 var BoardFactory = new _modelsBoard.CollisionMatrix();
