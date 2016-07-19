@@ -49,7 +49,7 @@ class ViewController {
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     // Append canvas object
-    document.body.appendChild(this.canvas);
+    document.getElementById("canvas-container").appendChild(this.canvas);
   }
 
   /**
