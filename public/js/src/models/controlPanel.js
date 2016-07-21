@@ -34,7 +34,7 @@ export default class ControlPanel {
   * Show Element as active
   */
   _setActive(el) {
-    el.style.color = "red";
+    el.style.backgroundColor = "red";
   }
 
   /**
@@ -43,7 +43,7 @@ export default class ControlPanel {
   * Show Element as inactive
   */
   _setInactive(el) {
-    el.style.color = "white";
+    el.style.backgroundColor = "white";
   }
 
   /**

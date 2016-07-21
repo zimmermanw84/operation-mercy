@@ -2,25 +2,59 @@
 <head>
   <title>Walt Zimmerman</title>
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <!-- Background img container -->
   <div id="canvas-container" width="1366" height="768"></div>
-    <div id="overlay-intro">
-      <header>Welcome</header>
-      <footer>Hit Space to continue</footer>
-    </div>
-  <div id="control-panel">
-    <div class="controls">
-      <!-- WILL REPLACE WITH ICONS -->
-      <span id="up">UP</span>
-      <span id="down">DOWN</span>
-      <span id="left">LEFT</span>
-      <span id="right">RIGHT</span>
-      <span id="space">SPACE</span>
+  <div id="overlay-intro">
+    <h1>Welcome to Walt Zimmerman's Portfolio!</h1>
+    <div id="locke-intro-container">
+      <h2>Hit Space to continue...</h2>
+      <h3>START HERE!!!</h3>
+      <img src="assets/sprites/locke/locke_front_1.png">
     </div>
   </div>
   <div id="overlay-dialog"></div>
+  <div id="control-panel">
+    <h1>Walt's Portfolio</h1>
+
+    <div class="social">
+      <table>
+        <tr>
+          <td><img src="assets/imgs/Github-icon.png"></td>
+          <td><img src="assets/imgs/LinkedIn-icon.png"></td>
+          <td><img src="assets/imgs/Twitter-icon.png"></td>
+        </tr>
+      </table>
+    </div>
+
+    <h2>Mission:</h2>
+    <p>
+      Walk around and talk to people to find out about Walt!
+    </p>
+
+    <div class="controls">
+      <table>
+        <tr>
+          <td>1</td>
+          <td><img id="up" src="assets/imgs/up-arrow.png"></td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td><img id="left" src="assets/imgs/left-arrow.png"></td>
+          <td id="space"><span>SPACE</span></td>
+          <td><img id="right" src="assets/imgs/right-arrow.png"></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><img id="down" src="assets/imgs/down-arrow.png"></td>
+          <td>9</td>
+        </tr>
+      <table>
+    </div>
+
+  </div>
   <script type="text/javascript" src="js/dist/build.js"></script>
 </body>
 </html>

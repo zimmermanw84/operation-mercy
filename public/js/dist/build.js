@@ -730,7 +730,7 @@ var ControlPanel = (function () {
   */
 
   ControlPanel.prototype._setActive = function _setActive(el) {
-    el.style.color = "red";
+    el.style.backgroundColor = "red";
   };
 
   /**
@@ -740,7 +740,7 @@ var ControlPanel = (function () {
   */
 
   ControlPanel.prototype._setInactive = function _setInactive(el) {
-    el.style.color = "white";
+    el.style.backgroundColor = "white";
   };
 
   /**
@@ -753,43 +753,6 @@ var ControlPanel = (function () {
     // Set keyup and key down events
     window.addEventListener('keydown', this._keyDownHendler.bind(this));
     window.addEventListener('keyup', this._keyUpHendler.bind(this));
-
-    // window.addEventListener('keydown', (e) => {
-    //   switch(e.keyCode) {
-    //   case LEFT:
-    //     this._setActive(this.left);
-    //     break;
-    //   case UP:
-    //     this._setActive(this.up);
-    //     break;
-    //   case RIGHT:
-    //     this._setActive(this.right);
-    //     break;
-    //   case DOWN:
-    //     this._setActive(this.down);
-    //     break;
-    //   case SPACE:
-    //     this._setActive(this.space);
-    // }
-    // });
-    // window.addEventListener('keyup', (e) => {
-    //   switch(e.keyCode) {
-    //   case LEFT:
-    //     this._setInactive(this.left);
-    //     break;
-    //   case UP:
-    //     this._setInactive(this.up);
-    //     break;
-    //   case RIGHT:
-    //     this._setInactive(this.right);
-    //     break;
-    //   case DOWN:
-    //     this._setInactive(this.down);
-    //     break;
-    //   case SPACE:
-    //     this._setInactive(this.space);
-    // }
-    // });
   };
 
   // Event handlers
