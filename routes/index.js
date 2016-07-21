@@ -14,6 +14,6 @@ const router = express.Router();
 const mainController = require("../controllers/main");
 
 // Render entire web app
-router.get('*', mainController.appDispatcher);
+router.get('/', mainController.appDispatcher);
 
 module.exports = router;
