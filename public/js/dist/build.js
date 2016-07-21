@@ -487,7 +487,7 @@ var ViewController = (function () {
 
   ViewController.prototype._init = function _init() {
     this.canvas = document.createElement("canvas");
-    this.canvas.style.position = "absolute";
+    this.canvas.style.position = "relative";
     this.canvas.style.zIndex = "1";
     this.ctx = this.canvas.getContext("2d");
     // Set Props
