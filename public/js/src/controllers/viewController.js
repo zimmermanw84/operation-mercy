@@ -21,6 +21,7 @@ class ViewController {
     // Overlay props
     this.introOverlay = overlays["intro"];
     this.dialogOverlay = overlays["dialog"];
+    this.controlPanel = overlays["controlPanel"];
 
     // Hard coded for background img dimensions
     this.height = 768 || height; // height of background image

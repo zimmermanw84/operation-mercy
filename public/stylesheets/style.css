@@ -9,11 +9,26 @@
   margin: 0;
 }
 
+body {
+  background-color: black;
+}
+
+#control-panel {
+  z-index: 50;
+  background-color: black;
+  float: right;
+  width: 14%;
+  height: 100%;
+}
+
+.controls span {
+  color: white;
+}
+
 #canvas-container {
   position:absolute;
   background-image: url('../assets/sprites/ResizedMap.png');
   z-index:-1;
-
 }
 
 #overlay-intro {

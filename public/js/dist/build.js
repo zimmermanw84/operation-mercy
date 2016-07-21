@@ -428,7 +428,7 @@ var AppController = (function () {
 exports.AppController = AppController;
 // Hero/Locke Starting position
 
-},{"../models/sprite":8}],4:[function(require,module,exports){
+},{"../models/sprite":9}],4:[function(require,module,exports){
 //  Canvas View Controller
 //  public/js/src/controllers/viewController.js
 //
@@ -465,6 +465,7 @@ var ViewController = (function () {
     // Overlay props
     this.introOverlay = overlays["intro"];
     this.dialogOverlay = overlays["dialog"];
+    this.controlPanel = overlays["controlPanel"];
 
     // Hard coded for background img dimensions
     this.height = 768 || height; // height of background image
@@ -528,7 +529,7 @@ var ViewController = (function () {
 
 exports.ViewController = ViewController;
 
-},{"../../vendor/Q":9}],5:[function(require,module,exports){
+},{"../../vendor/Q":10}],5:[function(require,module,exports){
 // Index
 //  public/js/src/index.js
 //
@@ -538,11 +539,17 @@ exports.ViewController = ViewController;
 // Models
 'use strict';
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 var _modelsSprite = require('./models/sprite');
 
 var _modelsBoard = require('./models/board');
 
 var _modelsOverlay = require('./models/overlay');
+
+var _modelsControlPanel = require('./models/controlPanel');
+
+var _modelsControlPanel2 = _interopRequireDefault(_modelsControlPanel);
 
 // Controllers
 
@@ -554,7 +561,7 @@ var _controllersAppController = require('./controllers/appController');
 var hero = new _modelsSprite.Locke();
 var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
 // Overlays
-var overlays = { intro: new _modelsOverlay.Overlay("intro"), dialog: new _modelsOverlay.Overlay("dialog") };
+var overlays = { intro: new _modelsOverlay.Overlay("intro"), dialog: new _modelsOverlay.Overlay("dialog"), controlPanel: new _modelsControlPanel2['default']() };
 // Locals
 var viewController = new _controllersViewController.ViewController(overlays);
 var BoardFactory = new _modelsBoard.CollisionMatrix();
@@ -566,7 +573,7 @@ BoardFactory.buildBoard().then(function (Board) {
   console.error(err);
 });
 
-},{"./controllers/appController":3,"./controllers/viewController":4,"./models/board":6,"./models/overlay":7,"./models/sprite":8}],6:[function(require,module,exports){
+},{"./controllers/appController":3,"./controllers/viewController":4,"./models/board":6,"./models/controlPanel":7,"./models/overlay":8,"./models/sprite":9}],6:[function(require,module,exports){
 //  Board
 //  public/js/src/models/board.js
 //
@@ -681,7 +688,157 @@ var CollisionMatrix = (function () {
 
 exports.CollisionMatrix = CollisionMatrix;
 
-},{"../../vendor/Q":9}],7:[function(require,module,exports){
+},{"../../vendor/Q":10}],7:[function(require,module,exports){
+//  control panel
+//  public/js/src/models/controlPanel.js
+//
+//  Created by Walt Zimmerman on 7/20/16.
+//
+
+"use strict";
+
+exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LEFT = 37;
+var UP = 38;
+var RIGHT = 39;
+var DOWN = 40;
+var SPACE = 32;
+
+/**
+* @Public
+* ControlPanel {object}
+* The control display
+*/
+
+var ControlPanel = (function () {
+  function ControlPanel() {
+    _classCallCheck(this, ControlPanel);
+
+    // Elements
+    this.up = document.getElementById("up"), this.down = document.getElementById("down"), this.left = document.getElementById("left"), this.right = document.getElementById("right"), this.space = document.getElementById("space");
+
+    this._bindKeys();
+  }
+
+  /**
+  * @private
+  * _setActive {function}
+  * Show Element as active
+  */
+
+  ControlPanel.prototype._setActive = function _setActive(el) {
+    el.style.color = "red";
+  };
+
+  /**
+  * @private
+  * _setInactive {function}
+  * Show Element as inactive
+  */
+
+  ControlPanel.prototype._setInactive = function _setInactive(el) {
+    el.style.color = "white";
+  };
+
+  /**
+  * @private
+  * _bindKeys {function}
+  * Bind necessary keys for state change
+  */
+
+  ControlPanel.prototype._bindKeys = function _bindKeys() {
+    // Set keyup and key down events
+    window.addEventListener('keydown', this._keyDownHendler.bind(this));
+    window.addEventListener('keyup', this._keyUpHendler.bind(this));
+
+    // window.addEventListener('keydown', (e) => {
+    //   switch(e.keyCode) {
+    //   case LEFT:
+    //     this._setActive(this.left);
+    //     break;
+    //   case UP:
+    //     this._setActive(this.up);
+    //     break;
+    //   case RIGHT:
+    //     this._setActive(this.right);
+    //     break;
+    //   case DOWN:
+    //     this._setActive(this.down);
+    //     break;
+    //   case SPACE:
+    //     this._setActive(this.space);
+    // }
+    // });
+    // window.addEventListener('keyup', (e) => {
+    //   switch(e.keyCode) {
+    //   case LEFT:
+    //     this._setInactive(this.left);
+    //     break;
+    //   case UP:
+    //     this._setInactive(this.up);
+    //     break;
+    //   case RIGHT:
+    //     this._setInactive(this.right);
+    //     break;
+    //   case DOWN:
+    //     this._setInactive(this.down);
+    //     break;
+    //   case SPACE:
+    //     this._setInactive(this.space);
+    // }
+    // });
+  };
+
+  // Event handlers
+
+  ControlPanel.prototype._keyDownHendler = function _keyDownHendler(e) {
+    switch (e.keyCode) {
+      case LEFT:
+        this._setActive(this.left);
+        break;
+      case UP:
+        this._setActive(this.up);
+        break;
+      case RIGHT:
+        this._setActive(this.right);
+        break;
+      case DOWN:
+        this._setActive(this.down);
+        break;
+      case SPACE:
+        this._setActive(this.space);
+    }
+  };
+
+  ControlPanel.prototype._keyUpHendler = function _keyUpHendler(e) {
+    switch (e.keyCode) {
+      case LEFT:
+        this._setInactive(this.left);
+        break;
+      case UP:
+        this._setInactive(this.up);
+        break;
+      case RIGHT:
+        this._setInactive(this.right);
+        break;
+      case DOWN:
+        this._setInactive(this.down);
+        break;
+      case SPACE:
+        this._setInactive(this.space);
+    }
+  };
+
+  return ControlPanel;
+})();
+
+exports["default"] = ControlPanel;
+module.exports = exports["default"];
+
+},{}],8:[function(require,module,exports){
 //  Models
 //  public/js/src/models/overlay.js
 //
@@ -784,7 +941,7 @@ var Overlay = (function () {
 
 exports.Overlay = Overlay;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 //  Models
 //  public/js/src/models.js
 //
@@ -993,7 +1150,7 @@ var Npc = (function (_SpriteBase2) {
 exports.Locke = Locke;
 exports.Npc = Npc;
 
-},{"../config/img_src":2}],9:[function(require,module,exports){
+},{"../config/img_src":2}],10:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 "use strict";
