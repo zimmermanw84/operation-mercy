@@ -19,11 +19,11 @@ const SPACE = 32;
 export default class ControlPanel {
   constructor() {
     // Elements
-    this.up = document.getElementById("up"),
-    this.down = document.getElementById("down"),
-    this.left = document.getElementById("left"),
-    this.right = document.getElementById("right"),
-    this.space = document.getElementById("space")
+    this.up = document.getElementById("up");
+    this.down = document.getElementById("down");
+    this.left = document.getElementById("left");
+    this.right = document.getElementById("right");
+    this.space = document.getElementById("space");
 
     this._bindKeys();
   }
@@ -56,6 +56,7 @@ export default class ControlPanel {
     window.addEventListener('keydown', this._keyDownHendler.bind(this));
     window.addEventListener('keyup', this._keyUpHendler.bind(this));
   }
+
 
   // Event handlers
   _keyDownHendler(e) {

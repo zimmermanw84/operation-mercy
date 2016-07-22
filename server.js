@@ -27,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Set public path to root directory to access css
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(`${__dirname}/public`, { maxAge: 86400000 /*one day*/}));
 
 //add timestamps in front of log messages
 require('console-stamp')(console, { pattern : "dd/mm/yyyy HH:MM:ss.l" });
