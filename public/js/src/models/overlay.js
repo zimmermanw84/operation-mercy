@@ -19,6 +19,7 @@ class Overlay {
     this.type = type;
     this.typeId = OVERLAY_TYPES[type];
     this.element = document.getElementById(this.typeId);
+
     this.isActive;
 
     // Initialize
@@ -37,11 +38,45 @@ class Overlay {
   /**
   * @public
   * toggleOverlay {function}
+  * @param {Npc} - Optional - if Dialog box provide Npc
   * Show or Hide
   */
-  toggleOverlay() {
-    if(this.isActive) this._hide();
-    else this._show();
+  toggleOverlay(npc) {
+    if(this.isActive) {
+      this._hide();
+      if(npc) this._removeDialog(npc);
+    } else {
+      this._show();
+      // The dialog box case
+      if(npc) this._renderDialog(npc);
+    }
+
+  }
+
+  /**
+  * @private
+  * _renderDialog {function}
+  * Render correct dialog
+  */
+  _renderDialog(npc) {
+    let headShotImg = document.getElementById("headshot");
+    let content = document.getElementById("content");
+
+    headShotImg.src = npc.headShotSrc;
+    content.innerHTML = npc.dialog;
+  }
+
+  /**
+  * @private
+  * _renderDialog {function}
+  * Clean out img and text nodes correct dialog
+  */
+  _removeDialog(npc) {
+    let headShotImg = document.getElementById("headshot");
+    let content = document.getElementById("content");
+
+    headShotImg.src = "";
+    content.innerHTML = ""
   }
 
   /**
@@ -84,4 +119,4 @@ class Overlay {
 
 }
 
-export { Overlay }
+export default Overlay;

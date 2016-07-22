@@ -7,7 +7,7 @@
 // Models
 import { Locke, Npc } from './models/sprite';
 import { CollisionMatrix } from './models/board';
-import { Overlay } from './models/overlay';
+import Overlay from './models/overlay';
 import ControlPanel from './models/controlPanel';
 
 // Controllers

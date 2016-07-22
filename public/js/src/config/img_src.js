@@ -69,7 +69,8 @@ const SPRITE_IMG_SRC = {
       "../assets/sprites/mog/mog_right_1.png",
       "../assets/sprites/mog/mog_right_2.png",
       "../assets/sprites/mog/mog_right_3.png"
-    ]
+    ],
+    headShot: "../assets/sprites/mog/mog_head.png"
   },
   Gaurd: {
     up: [
@@ -117,4 +118,4 @@ const SPRITE_IMG_SRC = {
   }
 };
 
-export { SPRITE_IMG_SRC };
+export default SPRITE_IMG_SRC;

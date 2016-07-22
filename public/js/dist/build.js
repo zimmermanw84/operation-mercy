@@ -120,6 +120,26 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
+//  Sprite dialog
+//  public/js/src/config/dialog.js
+//
+//  Created by Walt Zimmerman on 7/21/16.
+//
+
+"use strict";
+
+exports.__esModule = true;
+var DIALOG = {
+  Mog: "<h2>KUPO!</h2><h3>Let me tell you about Walt!</h3><p>I hear he is a backend focused, Fullstack Developer.</br></p>He is comfortable teaching himself new technologies, and does so at an accelerated pace.<p>Walt's work ethic came from the military and only has one gear and it's 100%</p>",
+  Emporer: "<h1>Emporer</h1>",
+  Gaurd: "<h1>Gaurd</h1>",
+  Kefka: "<h1>Kefka</h1>"
+};
+
+exports["default"] = DIALOG;
+module.exports = exports["default"];
+
+},{}],3:[function(require,module,exports){
 //  Sprite img sorces
 //  public/js/src/config/img_src.js
 //
@@ -146,7 +166,8 @@ var SPRITE_IMG_SRC = {
     up: ["../assets/sprites/mog/mog_back_1.png", "../assets/sprites/mog/mog_back_2.png", "../assets/sprites/mog/mog_back_3.png"],
     down: ["../assets/sprites/mog/mog_front_1.png", "../assets/sprites/mog/mog_front_2.png", "../assets/sprites/mog/mog_front_3.png"],
     left: ["../assets/sprites/mog/mog_left_1.png", "../assets/sprites/mog/mog_left_2.png", "../assets/sprites/mog/mog_left_3.png"],
-    right: ["../assets/sprites/mog/mog_right_1.png", "../assets/sprites/mog/mog_right_2.png", "../assets/sprites/mog/mog_right_3.png"]
+    right: ["../assets/sprites/mog/mog_right_1.png", "../assets/sprites/mog/mog_right_2.png", "../assets/sprites/mog/mog_right_3.png"],
+    headShot: "../assets/sprites/mog/mog_head.png"
   },
   Gaurd: {
     up: ["../assets/sprites/narshe_gaurd/narshe_back_1.png", "../assets/sprites/narshe_gaurd/narshe_back_2.png", "../assets/sprites/narshe_gaurd/narshe_back_3.png"],
@@ -162,9 +183,10 @@ var SPRITE_IMG_SRC = {
   }
 };
 
-exports.SPRITE_IMG_SRC = SPRITE_IMG_SRC;
+exports["default"] = SPRITE_IMG_SRC;
+module.exports = exports["default"];
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 //  Application Controller
 //  public/js/src/contollers/appController.js
 //
@@ -333,21 +355,52 @@ var AppController = (function () {
       A way to optimize this would be to find which
       direction the char is facing and only check that side
     */
+    var isNPC = false;
+    // Cache NPC reference
+    var NPC = undefined;
     // Fall through
-    switch (true) {
-      case this.Board[this.hero.y + 1][this.hero.x] instanceof _modelsSprite.Npc:
-      case this.Board[this.hero.y - 1][this.hero.x] instanceof _modelsSprite.Npc:
-      case this.Board[this.hero.y][this.hero.x + 1] instanceof _modelsSprite.Npc:
-      case this.Board[this.hero.y][this.hero.x - 1] instanceof _modelsSprite.Npc:
-        // If overlay is active then toggle and start movement
-        if (!this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
-          this._stopSpriteMovment();
-          this.VC.dialogOverlay.toggleOverlay();
-        } else {
-          this.VC.dialogOverlay.toggleOverlay();
-          this._spriteRandomMovment();
-        }
+    if (this.Board[this.hero.y + 1][this.hero.x] instanceof _modelsSprite.Npc) {
+      NPC = this.Board[this.hero.y + 1][this.hero.x];
+      isNPC = true;
     }
+
+    if (this.Board[this.hero.y - 1][this.hero.x] instanceof _modelsSprite.Npc) {
+      NPC = this.Board[this.hero.y - 1][this.hero.x];
+      isNPC = true;
+    }
+
+    if (this.Board[this.hero.y][this.hero.x + 1] instanceof _modelsSprite.Npc) {
+      NPC = this.Board[this.hero.y][this.hero.x + 1];
+      isNPC = true;
+    }
+
+    if (this.Board[this.hero.y][this.hero.x - 1] instanceof _modelsSprite.Npc) {
+      NPC = this.Board[this.hero.y][this.hero.x - 1];
+      isNPC = true;
+    }
+
+    if (isNPC && !this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
+      this._stopSpriteMovment();
+      this.VC.dialogOverlay.toggleOverlay(NPC);
+    } else if (isNPC) {
+      this.VC.dialogOverlay.toggleOverlay(NPC);
+      this._spriteRandomMovment();
+    }
+    // KEEP OLD IMPLIMENTATION IN LUE OF TESTING
+    // switch(true) {
+    // case (this.Board[(this.hero.y + 1)][this.hero.x] instanceof Npc):
+    // case (this.Board[(this.hero.y - 1)][this.hero.x] instanceof Npc):
+    // case (this.Board[this.hero.y][(this.hero.x + 1)] instanceof Npc):
+    // case (this.Board[this.hero.y][(this.hero.x - 1)] instanceof Npc):
+    // If overlay is active then toggle and start movement
+    // if(!this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
+    //   this._stopSpriteMovment();
+    //   this.VC.dialogOverlay.toggleOverlay();
+    // } else {
+    //   this.VC.dialogOverlay.toggleOverlay();
+    //   this._spriteRandomMovment();
+    // }
+    // }
   };
 
   /**
@@ -428,7 +481,7 @@ var AppController = (function () {
 exports.AppController = AppController;
 // Hero/Locke Starting position
 
-},{"../models/sprite":9}],4:[function(require,module,exports){
+},{"../models/sprite":10}],5:[function(require,module,exports){
 //  Canvas View Controller
 //  public/js/src/controllers/viewController.js
 //
@@ -529,7 +582,7 @@ var ViewController = (function () {
 
 exports.ViewController = ViewController;
 
-},{"../../vendor/Q":10}],5:[function(require,module,exports){
+},{"../../vendor/Q":11}],6:[function(require,module,exports){
 // Index
 //  public/js/src/index.js
 //
@@ -547,6 +600,8 @@ var _modelsBoard = require('./models/board');
 
 var _modelsOverlay = require('./models/overlay');
 
+var _modelsOverlay2 = _interopRequireDefault(_modelsOverlay);
+
 var _modelsControlPanel = require('./models/controlPanel');
 
 var _modelsControlPanel2 = _interopRequireDefault(_modelsControlPanel);
@@ -561,7 +616,7 @@ var _controllersAppController = require('./controllers/appController');
 var hero = new _modelsSprite.Locke();
 var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
 // Overlays
-var overlays = { intro: new _modelsOverlay.Overlay("intro"), dialog: new _modelsOverlay.Overlay("dialog"), controlPanel: new _modelsControlPanel2['default']() };
+var overlays = { intro: new _modelsOverlay2['default']("intro"), dialog: new _modelsOverlay2['default']("dialog"), controlPanel: new _modelsControlPanel2['default']() };
 // Locals
 var viewController = new _controllersViewController.ViewController(overlays);
 var BoardFactory = new _modelsBoard.CollisionMatrix();
@@ -573,7 +628,7 @@ BoardFactory.buildBoard().then(function (Board) {
   console.error(err);
 });
 
-},{"./controllers/appController":3,"./controllers/viewController":4,"./models/board":6,"./models/controlPanel":7,"./models/overlay":8,"./models/sprite":9}],6:[function(require,module,exports){
+},{"./controllers/appController":4,"./controllers/viewController":5,"./models/board":7,"./models/controlPanel":8,"./models/overlay":9,"./models/sprite":10}],7:[function(require,module,exports){
 //  Board
 //  public/js/src/models/board.js
 //
@@ -688,7 +743,7 @@ var CollisionMatrix = (function () {
 
 exports.CollisionMatrix = CollisionMatrix;
 
-},{"../../vendor/Q":10}],7:[function(require,module,exports){
+},{"../../vendor/Q":11}],8:[function(require,module,exports){
 //  control panel
 //  public/js/src/models/controlPanel.js
 //
@@ -801,7 +856,7 @@ var ControlPanel = (function () {
 exports["default"] = ControlPanel;
 module.exports = exports["default"];
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 //  Models
 //  public/js/src/models/overlay.js
 //
@@ -832,6 +887,7 @@ var Overlay = (function () {
     this.type = type;
     this.typeId = OVERLAY_TYPES[type];
     this.element = document.getElementById(this.typeId);
+
     this.isActive;
 
     // Initialize
@@ -851,11 +907,47 @@ var Overlay = (function () {
   /**
   * @public
   * toggleOverlay {function}
+  * @param {Npc} - Optional - if Dialog box provide Npc
   * Show or Hide
   */
 
-  Overlay.prototype.toggleOverlay = function toggleOverlay() {
-    if (this.isActive) this._hide();else this._show();
+  Overlay.prototype.toggleOverlay = function toggleOverlay(npc) {
+    if (this.isActive) {
+      this._hide();
+      if (npc) this._removeDialog(npc);
+    } else {
+      this._show();
+      // The dialog box case
+      if (npc) this._renderDialog(npc);
+    }
+  };
+
+  /**
+  * @private
+  * _renderDialog {function}
+  * Render correct dialog
+  */
+
+  Overlay.prototype._renderDialog = function _renderDialog(npc) {
+    var headShotImg = document.getElementById("headshot");
+    var content = document.getElementById("content");
+
+    headShotImg.src = npc.headShotSrc;
+    content.innerHTML = npc.dialog;
+  };
+
+  /**
+  * @private
+  * _renderDialog {function}
+  * Clean out img and text nodes correct dialog
+  */
+
+  Overlay.prototype._removeDialog = function _removeDialog(npc) {
+    var headShotImg = document.getElementById("headshot");
+    var content = document.getElementById("content");
+
+    headShotImg.src = "";
+    content.innerHTML = "";
   };
 
   /**
@@ -902,9 +994,10 @@ var Overlay = (function () {
   return Overlay;
 })();
 
-exports.Overlay = Overlay;
+exports["default"] = Overlay;
+module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 //  Models
 //  public/js/src/models.js
 //
@@ -915,11 +1008,19 @@ exports.Overlay = Overlay;
 
 exports.__esModule = true;
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _configImg_src = require("../config/img_src");
+
+var _configImg_src2 = _interopRequireDefault(_configImg_src);
+
+var _configDialog = require("../config/dialog");
+
+var _configDialog2 = _interopRequireDefault(_configDialog);
 
 /**
 * Sprite {object}
@@ -973,10 +1074,10 @@ var SpriteBase = (function () {
 
   SpriteBase.prototype._rotateImageSrc = function _rotateImageSrc(direction) {
     // Set img src
-    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name][direction][Math.floor(this.currentImgIndex)];
+    this.imgSrc = _configImg_src2["default"][this.name][direction][Math.floor(this.currentImgIndex)];
 
     // We don't want to switch imgs every time so we do an incremental tick
-    if (this.currentImgIndex >= _configImg_src.SPRITE_IMG_SRC[this.name][direction].length - 1) {
+    if (this.currentImgIndex >= _configImg_src2["default"][this.name][direction].length - 1) {
       this.currentImgIndex = 0;
     } else {
       // Rotate image index
@@ -1049,7 +1150,7 @@ var Locke = (function (_SpriteBase) {
     this.height = 28;
     // Asset
     // Setting starting src
-    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name].up[this.currentImgIndex];
+    this.imgSrc = _configImg_src2["default"][this.name].up[this.currentImgIndex];
   }
 
   /**
@@ -1071,12 +1172,13 @@ var Npc = (function (_SpriteBase2) {
 
     _SpriteBase2.call(this, NPC, name, x, y);
     this.image = new Image();
-
     // px
     this.width = 17;
     this.height = 29;
-    // Asset
-    this.imgSrc = _configImg_src.SPRITE_IMG_SRC[this.name].down[this.currentImgIndex];
+    // Assets
+    this.imgSrc = _configImg_src2["default"][this.name].down[this.currentImgIndex];
+    this.headShotSrc = _configImg_src2["default"][this.name].headShot;
+    this.dialog = _configDialog2["default"][this.name];
   }
 
   /**
@@ -1113,7 +1215,7 @@ var Npc = (function (_SpriteBase2) {
 exports.Locke = Locke;
 exports.Npc = Npc;
 
-},{"../config/img_src":2}],10:[function(require,module,exports){
+},{"../config/dialog":2,"../config/img_src":3}],11:[function(require,module,exports){
 (function (process){
 // vim:ts=4:sts=4:sw=4:
 "use strict";
@@ -3130,4 +3232,4 @@ exports.Npc = Npc;
  */
 
 }).call(this,require('_process'))
-},{"_process":1}]},{},[5]);
+},{"_process":1}]},{},[6]);

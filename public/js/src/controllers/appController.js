@@ -144,21 +144,52 @@ class AppController {
       A way to optimize this would be to find which
       direction the char is facing and only check that side
     */
+    let isNPC = false;
+    // Cache NPC reference
+    let NPC;
     // Fall through
-    switch(true) {
-      case (this.Board[(this.hero.y + 1)][this.hero.x] instanceof Npc):
-      case (this.Board[(this.hero.y - 1)][this.hero.x] instanceof Npc):
-      case (this.Board[this.hero.y][(this.hero.x + 1)] instanceof Npc):
-      case (this.Board[this.hero.y][(this.hero.x - 1)] instanceof Npc):
-        // If overlay is active then toggle and start movement
-        if(!this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
-          this._stopSpriteMovment();
-          this.VC.dialogOverlay.toggleOverlay();
-        } else {
-          this.VC.dialogOverlay.toggleOverlay();
-          this._spriteRandomMovment();
-        }
+    if(this.Board[(this.hero.y + 1)][this.hero.x] instanceof Npc) {
+      NPC = this.Board[(this.hero.y + 1)][this.hero.x];
+      isNPC = true;
     }
+
+    if(this.Board[(this.hero.y - 1)][this.hero.x] instanceof Npc) {
+      NPC = this.Board[(this.hero.y - 1)][this.hero.x];
+      isNPC = true;
+    }
+
+    if(this.Board[this.hero.y][(this.hero.x + 1)] instanceof Npc) {
+      NPC = this.Board[this.hero.y][(this.hero.x + 1)];
+      isNPC = true;
+    }
+
+    if(this.Board[this.hero.y][(this.hero.x - 1)] instanceof Npc) {
+      NPC = this.Board[this.hero.y][(this.hero.x - 1)];
+      isNPC = true;
+    }
+
+    if(isNPC && !this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
+      this._stopSpriteMovment();
+      this.VC.dialogOverlay.toggleOverlay(NPC);
+    } else if(isNPC) {
+      this.VC.dialogOverlay.toggleOverlay(NPC);
+      this._spriteRandomMovment();
+    }
+     // KEEP OLD IMPLIMENTATION IN LUE OF TESTING
+    // switch(true) {
+      // case (this.Board[(this.hero.y + 1)][this.hero.x] instanceof Npc):
+      // case (this.Board[(this.hero.y - 1)][this.hero.x] instanceof Npc):
+      // case (this.Board[this.hero.y][(this.hero.x + 1)] instanceof Npc):
+      // case (this.Board[this.hero.y][(this.hero.x - 1)] instanceof Npc):
+        // If overlay is active then toggle and start movement
+        // if(!this.VC.dialogOverlay.isActive && this.isSpriteMovementActive) {
+        //   this._stopSpriteMovment();
+        //   this.VC.dialogOverlay.toggleOverlay();
+        // } else {
+        //   this.VC.dialogOverlay.toggleOverlay();
+        //   this._spriteRandomMovment();
+        // }
+    // }
   }
 
    /**

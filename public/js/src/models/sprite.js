@@ -7,7 +7,8 @@
 const LOCKE = 1;
 const NPC = 2;
 
-import { SPRITE_IMG_SRC } from "../config/img_src";
+import SPRITE_IMG_SRC from "../config/img_src";
+import DIALOG from "../config/dialog";
 
 /**
 * Sprite {object}
@@ -131,12 +132,13 @@ class Npc extends SpriteBase {
   constructor(name, x = 0, y = 0) {
     super(NPC, name, x, y);
     this.image = new Image;
-
     // px
     this.width = 17;
     this.height = 29;
-    // Asset
+    // Assets
     this.imgSrc = SPRITE_IMG_SRC[this.name].down[this.currentImgIndex];
+    this.headShotSrc = SPRITE_IMG_SRC[this.name].headShot;
+    this.dialog = DIALOG[this.name];
   }
 
   /**
