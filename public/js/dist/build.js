@@ -625,8 +625,7 @@ var viewController = new _controllersViewController.ViewController(overlays);
 var BoardFactory = new _modelsBoard.CollisionMatrix();
 
 BoardFactory.buildBoard().then(function (Board) {
-  var AppCtrl = new _controllersAppController.AppController(viewController, Board, Hero, NPCs);
-  AppCtrl.logBoard();
+  new _controllersAppController.AppController(viewController, Board, Hero, NPCs);
 })['catch'](function (err) {
   console.error(err);
 });

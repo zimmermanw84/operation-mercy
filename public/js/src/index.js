@@ -25,8 +25,5 @@ const viewController = new ViewController(overlays);
 const BoardFactory = new CollisionMatrix;
 
 BoardFactory.buildBoard()
-  .then((Board) => {
-    const AppCtrl = new AppController(viewController, Board, Hero, NPCs);
-    AppCtrl.logBoard();
-  })
+  .then((Board) => { new AppController(viewController, Board, Hero, NPCs);})
   .catch((err) => { console.error(err); });
