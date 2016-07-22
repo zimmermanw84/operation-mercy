@@ -47,7 +47,8 @@ const SPRITE_IMG_SRC = {
       "../assets/sprites/emporer/emporer_right_1.png",
       "../assets/sprites/emporer/emporer_right_2.png",
       "../assets/sprites/emporer/emporer_right_3.png"
-    ]
+    ],
+    headShot: "assets/sprites/emporer/emporer_front_1.png"
   },
   Mog: {
     up: [
@@ -70,7 +71,7 @@ const SPRITE_IMG_SRC = {
       "../assets/sprites/mog/mog_right_2.png",
       "../assets/sprites/mog/mog_right_3.png"
     ],
-    headShot: "../assets/sprites/mog/mog_head.png"
+    headShot: "assets/sprites/mog/mog_head.png"
   },
   Gaurd: {
     up: [
@@ -92,7 +93,8 @@ const SPRITE_IMG_SRC = {
       "../assets/sprites/narshe_gaurd/narshe_right_1.png",
       "../assets/sprites/narshe_gaurd/narshe_right_2.png",
       "../assets/sprites/narshe_gaurd/narshe_right_3.png"
-    ]
+    ],
+    headShot: "assets/sprites/narshe_gaurd/narshe_front_1.png"
   },
   Kefka: {
     up: [
@@ -114,7 +116,8 @@ const SPRITE_IMG_SRC = {
       "../assets/sprites/kefka/kefka_right_1.png",
       "../assets/sprites/kefka/kefka_right_2.png",
       "../assets/sprites/kefka/kefka_right_3.png"
-    ]
+    ],
+    headShot: "assets/sprites/kefka/kefka_front_1.png"
   }
 };
 

@@ -130,10 +130,10 @@ process.umask = function() { return 0; };
 
 exports.__esModule = true;
 var DIALOG = {
-  Mog: "<h2>KUPO!</h2><h3>Let me tell you about Walt!</h3><p>I hear he is a backend focused, Fullstack Developer.</br></p>He is comfortable teaching himself new technologies, and does so at an accelerated pace.<p>Walt's work ethic came from the military and only has one gear and it's 100%</p>",
-  Emporer: "<h1>Emporer</h1>",
-  Gaurd: "<h1>Gaurd</h1>",
-  Kefka: "<h1>Kefka</h1>"
+  Mog: "<h3>Let me tell you about Walt... KUPO!</h3><ul><li>Hard worker</li><li>New father</li><li>Fast learner</li><li>Dog lover</li><li>Gamer</li><li>Loves building awesome products</li></ul>",
+  Emporer: "<h2>Have you heard about Walt's skills</h2><div style='width=100%'><table style='color: white;width: 16%;padding-left: 45%;padding-top: 5%;'><tr><td>JavaScript</td><td>|</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td></tr><tr><td>Node.Js</td><td>|</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td></tr><tr><td>HTML/CSS</td><td>|</td><td>X</td><td>X</td><td>X</td><td></td><td></td></tr><tr><td>AWS</td><td>|</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td></tr><tr><td>MySql</td><td>|</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td></tr><tr><td>Linux</td><td>|</td><td>X</td><td>X</td><td>X</td><td></td><td></td></tr><tr><td>Redis</td><td>|</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td></tr><tr><td>Python</td><td>|</td><td>X</td><td>X</td><td>X</td><td></td><td></td></tr><tr><td>Ruby</td><td>|</td><td>X</td><td>X</td><td>X</td><td></td><td></td></tr><tr><td>Elixer</td><td>|</td><td>X</td><td>X</td><td>X</td><td></td><td></td></tr><tr><td>C++</td><td>|</td><td>X</td><td>X</td><td></td><td></td><td></td></tr><tr><td>Lisp</td><td>|</td><td>X</td><td>X</td><td></td><td></td><td></td></tr></table></div>",
+  Gaurd: "<h1>Here's some projects he made!</h1><ul><li><h2><a href='https://www.oomamiapp.com/'>Oomamiapp</a></h2><p>Built a micro-service cloud base backend from and empty repo. <a href='https://itunes.apple.com/us/app/oomami/id1053373398?ls=1&mt=8'>Download</a> the app and check it out!</p></li><li><h2><a href='https://nepal-relief.herokuapp.com/beneficiaries/'>See The Need</a></h2><p>Help build the frontend. I used the Mapbox api to display points on a map of places that needed relief</p></li><li><h2><a href='https://github.com/Sedighian/watchthis'>Smart Potato</a></h2><p>Touched the whole stack. Built an app that aggregates movies helping solve the problem 'What do you want to watch.'</p></li><li><h2><a href='https://github.com/zimmermanw84/operation-mercy'>Operation Mercy</a></h2><p>This app! Through together a portfolio using just Es6 and HTML canvas. TODO: Make responsive, smooth animations, polish</p></li></ul>",
+  Kefka: "<h1>Experience???</h1><ul><li><h2>Oomamiapp - Software Engineer</h2><p>Original hire. An app that connects users to food in their area.</p></li><li><h2>Bandpass - Fullstack Developer</h2><p>A platform that aims to get music fans closer to their favorite bands.</p></li><li><h2>DevBootcamp - Teacher Assistant</h2><p>Help bootcampers learn Javascript, Ruby, SQL and much more.</p></li></ul>"
 };
 
 exports["default"] = DIALOG;
@@ -160,26 +160,29 @@ var SPRITE_IMG_SRC = {
     up: ["../assets/sprites/emporer/emporer_back_1.png", "../assets/sprites/emporer/emporer_back_2.png", "../assets/sprites/emporer/emporer_back_3.png"],
     down: ["../assets/sprites/emporer/emporer_front_1.png", "../assets/sprites/emporer/emporer_front_2.png", "../assets/sprites/emporer/emporer_front_3.png"],
     left: ["../assets/sprites/emporer/emporer_left_1.png", "../assets/sprites/emporer/emporer_left_2.png", "../assets/sprites/emporer/emporer_left_3.png"],
-    right: ["../assets/sprites/emporer/emporer_right_1.png", "../assets/sprites/emporer/emporer_right_2.png", "../assets/sprites/emporer/emporer_right_3.png"]
+    right: ["../assets/sprites/emporer/emporer_right_1.png", "../assets/sprites/emporer/emporer_right_2.png", "../assets/sprites/emporer/emporer_right_3.png"],
+    headShot: "assets/sprites/emporer/emporer_front_1.png"
   },
   Mog: {
     up: ["../assets/sprites/mog/mog_back_1.png", "../assets/sprites/mog/mog_back_2.png", "../assets/sprites/mog/mog_back_3.png"],
     down: ["../assets/sprites/mog/mog_front_1.png", "../assets/sprites/mog/mog_front_2.png", "../assets/sprites/mog/mog_front_3.png"],
     left: ["../assets/sprites/mog/mog_left_1.png", "../assets/sprites/mog/mog_left_2.png", "../assets/sprites/mog/mog_left_3.png"],
     right: ["../assets/sprites/mog/mog_right_1.png", "../assets/sprites/mog/mog_right_2.png", "../assets/sprites/mog/mog_right_3.png"],
-    headShot: "../assets/sprites/mog/mog_head.png"
+    headShot: "assets/sprites/mog/mog_head.png"
   },
   Gaurd: {
     up: ["../assets/sprites/narshe_gaurd/narshe_back_1.png", "../assets/sprites/narshe_gaurd/narshe_back_2.png", "../assets/sprites/narshe_gaurd/narshe_back_3.png"],
     down: ["../assets/sprites/narshe_gaurd/narshe_front_1.png", "../assets/sprites/narshe_gaurd/narshe_front_2.png", "../assets/sprites/narshe_gaurd/narshe_front_3.png"],
     left: ["../assets/sprites/narshe_gaurd/narshe_left_1.png", "../assets/sprites/narshe_gaurd/narshe_left_2.png", "../assets/sprites/narshe_gaurd/narshe_left_3.png"],
-    right: ["../assets/sprites/narshe_gaurd/narshe_right_1.png", "../assets/sprites/narshe_gaurd/narshe_right_2.png", "../assets/sprites/narshe_gaurd/narshe_right_3.png"]
+    right: ["../assets/sprites/narshe_gaurd/narshe_right_1.png", "../assets/sprites/narshe_gaurd/narshe_right_2.png", "../assets/sprites/narshe_gaurd/narshe_right_3.png"],
+    headShot: "assets/sprites/narshe_gaurd/narshe_front_1.png"
   },
   Kefka: {
     up: ["../assets/sprites/kefka/kefka_back_1.png", "../assets/sprites/kefka/kefka_back_2.png", "../assets/sprites/kefka/kefka_back_3.png"],
     down: ["../assets/sprites/kefka/kefka_front_1.png", "../assets/sprites/kefka/kefka_front_2.png", "../assets/sprites/kefka/kefka_front_3.png"],
     left: ["../assets/sprites/kefka/kefka_left_1.png", "../assets/sprites/kefka/kefka_left_2.png", "../assets/sprites/kefka/kefka_left_3.png"],
-    right: ["../assets/sprites/kefka/kefka_right_1.png", "../assets/sprites/kefka/kefka_right_2.png", "../assets/sprites/kefka/kefka_right_3.png"]
+    right: ["../assets/sprites/kefka/kefka_right_1.png", "../assets/sprites/kefka/kefka_right_2.png", "../assets/sprites/kefka/kefka_right_3.png"],
+    headShot: "assets/sprites/kefka/kefka_front_1.png"
   }
 };
 
@@ -613,7 +616,7 @@ var _controllersViewController = require('./controllers/viewController');
 var _controllersAppController = require('./controllers/appController');
 
 // Characters
-var hero = new _modelsSprite.Locke();
+var Hero = new _modelsSprite.Locke();
 var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new _modelsSprite.Npc("Gaurd"), new _modelsSprite.Npc("Kefka")];
 // Overlays
 var overlays = { intro: new _modelsOverlay2['default']("intro"), dialog: new _modelsOverlay2['default']("dialog"), controlPanel: new _modelsControlPanel2['default']() };
@@ -622,8 +625,8 @@ var viewController = new _controllersViewController.ViewController(overlays);
 var BoardFactory = new _modelsBoard.CollisionMatrix();
 
 BoardFactory.buildBoard().then(function (Board) {
-  var AppCtrl = new _controllersAppController.AppController(viewController, Board, hero, NPCs);
-  // AppCtrl.logBoard();
+  var AppCtrl = new _controllersAppController.AppController(viewController, Board, Hero, NPCs);
+  AppCtrl.logBoard();
 })['catch'](function (err) {
   console.error(err);
 });

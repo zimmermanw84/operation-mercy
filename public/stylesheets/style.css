@@ -10,8 +10,20 @@
   font-family: 'Playfair Display', serif;
 }
 
+a {
+  color: red
+}
+
+#overlay-dialog li {
+  padding: 10px;
+}
+
 body {
   background-color: black;
+}
+
+#info {
+  padding-top: 5%;
 }
 
 .controls {
@@ -91,4 +103,3 @@ body {
   text-align: center;
   padding-top: 10%;
 }
-

@@ -16,7 +16,7 @@ import { AppController } from './controllers/appController';
 
 
 // Characters
-const hero = new Locke;
+const Hero = new Locke;
 const NPCs = [new Npc("Mog"), new Npc("Emporer"), new Npc("Gaurd"), new Npc("Kefka")];
 // Overlays
 const overlays = {intro: new Overlay("intro"), dialog: new Overlay("dialog"), controlPanel: new ControlPanel};
@@ -26,7 +26,7 @@ const BoardFactory = new CollisionMatrix;
 
 BoardFactory.buildBoard()
   .then((Board) => {
-    const AppCtrl = new AppController(viewController, Board, hero, NPCs);
-    // AppCtrl.logBoard();
+    const AppCtrl = new AppController(viewController, Board, Hero, NPCs);
+    AppCtrl.logBoard();
   })
   .catch((err) => { console.error(err); });
