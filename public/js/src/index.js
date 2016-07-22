@@ -6,13 +6,13 @@
 
 // Models
 import { Locke, Npc } from './models/sprite';
-import { CollisionMatrix } from './models/board';
+import CollisionMatrix from './models/board';
 import Overlay from './models/overlay';
 import ControlPanel from './models/controlPanel';
 
 // Controllers
-import { ViewController } from './controllers/viewController';
-import { AppController } from './controllers/appController';
+import ViewController from './controllers/viewController';
+import AppController from './controllers/appController';
 
 
 // Characters

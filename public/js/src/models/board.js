@@ -96,4 +96,4 @@ class CollisionMatrix {
 
 }
 
-export { CollisionMatrix }
+export default CollisionMatrix;

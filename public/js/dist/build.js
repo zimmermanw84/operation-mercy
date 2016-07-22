@@ -481,7 +481,8 @@ var AppController = (function () {
   return AppController;
 })();
 
-exports.AppController = AppController;
+exports["default"] = AppController;
+module.exports = exports["default"];
 // Hero/Locke Starting position
 
 },{"../models/sprite":10}],5:[function(require,module,exports){
@@ -583,7 +584,8 @@ var ViewController = (function () {
   return ViewController;
 })();
 
-exports.ViewController = ViewController;
+exports["default"] = ViewController;
+module.exports = exports["default"];
 
 },{"../../vendor/Q":11}],6:[function(require,module,exports){
 // Index
@@ -601,6 +603,8 @@ var _modelsSprite = require('./models/sprite');
 
 var _modelsBoard = require('./models/board');
 
+var _modelsBoard2 = _interopRequireDefault(_modelsBoard);
+
 var _modelsOverlay = require('./models/overlay');
 
 var _modelsOverlay2 = _interopRequireDefault(_modelsOverlay);
@@ -613,7 +617,11 @@ var _modelsControlPanel2 = _interopRequireDefault(_modelsControlPanel);
 
 var _controllersViewController = require('./controllers/viewController');
 
+var _controllersViewController2 = _interopRequireDefault(_controllersViewController);
+
 var _controllersAppController = require('./controllers/appController');
+
+var _controllersAppController2 = _interopRequireDefault(_controllersAppController);
 
 // Characters
 var Hero = new _modelsSprite.Locke();
@@ -621,11 +629,11 @@ var NPCs = [new _modelsSprite.Npc("Mog"), new _modelsSprite.Npc("Emporer"), new 
 // Overlays
 var overlays = { intro: new _modelsOverlay2['default']("intro"), dialog: new _modelsOverlay2['default']("dialog"), controlPanel: new _modelsControlPanel2['default']() };
 // Locals
-var viewController = new _controllersViewController.ViewController(overlays);
-var BoardFactory = new _modelsBoard.CollisionMatrix();
+var viewController = new _controllersViewController2['default'](overlays);
+var BoardFactory = new _modelsBoard2['default']();
 
 BoardFactory.buildBoard().then(function (Board) {
-  new _controllersAppController.AppController(viewController, Board, Hero, NPCs);
+  new _controllersAppController2['default'](viewController, Board, Hero, NPCs);
 })['catch'](function (err) {
   console.error(err);
 });
@@ -743,7 +751,8 @@ var CollisionMatrix = (function () {
   return CollisionMatrix;
 })();
 
-exports.CollisionMatrix = CollisionMatrix;
+exports["default"] = CollisionMatrix;
+module.exports = exports["default"];
 
 },{"../../vendor/Q":11}],8:[function(require,module,exports){
 //  control panel
@@ -775,7 +784,11 @@ var ControlPanel = (function () {
     _classCallCheck(this, ControlPanel);
 
     // Elements
-    this.up = document.getElementById("up"), this.down = document.getElementById("down"), this.left = document.getElementById("left"), this.right = document.getElementById("right"), this.space = document.getElementById("space");
+    this.up = document.getElementById("up");
+    this.down = document.getElementById("down");
+    this.left = document.getElementById("left");
+    this.right = document.getElementById("right");
+    this.space = document.getElementById("space");
 
     this._bindKeys();
   }

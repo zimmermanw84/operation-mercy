@@ -262,4 +262,4 @@ class AppController {
 
 }
 
-export { AppController }
+export default AppController;

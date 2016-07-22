@@ -77,4 +77,4 @@ class ViewController {
 
 }
 
-export { ViewController }
+export default ViewController;
